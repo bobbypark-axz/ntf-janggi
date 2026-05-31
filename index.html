@@ -1,0 +1,1958 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#161210" />
+<title>Web Janggi · 한 수, 다시 두다</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #FAF7F1;
+    --bg-elev: #FFFFFF;
+    --bg-card: #F4EFE5;
+    --border: #E6DFCF;
+    --border-hi: #C8BBA0;
+    --fg1: #1F1A14;
+    --fg2: #4A4136;
+    --fg3: #7A6E5C;
+    --fg4: #A99F8B;
+    --gold: #B4863A;
+    --gold-d: #8A6420;
+    --gold-l: #D6AC5C;
+    --cho: #0B6E3D;
+    --cho-bg: #E6F3EC;
+    --han: #B72525;
+    --han-bg: #FBE9E9;
+    --sans: 'Pretendard Variable', Pretendard, -apple-system, system-ui, sans-serif;
+    --serif: 'Noto Serif KR', serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--fg1);
+    font-family: var(--sans);
+    overscroll-behavior: none;
+  }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  #root {
+    width: 100%;
+    max-width: 480px;
+    height: 100vh;
+    height: 100dvh;
+    background:
+      radial-gradient(800px 500px at 50% -10%, rgba(180,134,58,0.10), transparent 60%),
+      var(--bg);
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  #root::-webkit-scrollbar { width: 6px; }
+  #root::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+  #root::-webkit-scrollbar-track { background: transparent; }
+  @media (min-width: 600px) {
+    body { padding: 24px; background: #EFE9DC; }
+    #root {
+      border-radius: 28px;
+      height: min(880px, calc(100vh - 48px));
+      box-shadow:
+        0 30px 80px rgba(80,60,30,0.18),
+        0 0 0 1px rgba(0,0,0,0.04);
+    }
+  }
+  button { font-family: inherit; }
+  button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  @keyframes janggiPulse {
+    0%,100% { opacity: 0.55; transform: scale(1); }
+    50%     { opacity: 1;    transform: scale(1.08); }
+  }
+  @keyframes checkFlash {
+    0%, 100% { box-shadow: inset 0 0 0 0 rgba(190,42,42,0); }
+    50%      { box-shadow: inset 0 0 40px 8px rgba(190,42,42,0.55); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes backdropIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .fade-in { animation: fadeIn 320ms cubic-bezier(0.22,1,0.36,1) both; }
+
+  .scrollable { -webkit-overflow-scrolling: touch; }
+  .scrollable::-webkit-scrollbar { width: 0; }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!--  GAME ENGINE — 순수 함수형 장기 규칙 엔진                              -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+// ─── Constants ────────────────────────────────────────────────────
+const ROWS = 10;
+const COLS = 9;
+const SIDES = { CHO: 'CHO', HAN: 'HAN' };
+
+const PIECE_GLYPHS = {
+  king:    { CHO: '楚', HAN: '漢', kor: '궁' },
+  guard:   { CHO: '士', HAN: '士', kor: '사' },
+  chariot: { CHO: '車', HAN: '車', kor: '차' },
+  cannon:  { CHO: '包', HAN: '砲', kor: '포' },
+  horse:   { CHO: '馬', HAN: '馬', kor: '마' },
+  elephant:{ CHO: '象', HAN: '象', kor: '상' },
+  soldier: { CHO: '卒', HAN: '兵', kor: '졸/병' },
+};
+
+const PIECE_VALUE = {
+  chariot: 13, cannon: 7, horse: 5, elephant: 3,
+  guard: 3, soldier: 2, king: 10000,
+};
+
+const KOREAN_PIECE = {
+  king: '궁', guard: '사', chariot: '차', cannon: '포',
+  horse: '마', elephant: '상', soldier: '졸',
+};
+
+// HAN(red) at top (r=0..4), CHO(blue/green) at bottom (r=5..9)
+function initialBoard() {
+  const setup = [
+    { t: 'chariot',  s: 'HAN', r: 0, c: 0 },
+    { t: 'horse',    s: 'HAN', r: 0, c: 1 },
+    { t: 'elephant', s: 'HAN', r: 0, c: 2 },
+    { t: 'guard',    s: 'HAN', r: 0, c: 3 },
+    { t: 'guard',    s: 'HAN', r: 0, c: 5 },
+    { t: 'elephant', s: 'HAN', r: 0, c: 6 },
+    { t: 'horse',    s: 'HAN', r: 0, c: 7 },
+    { t: 'chariot',  s: 'HAN', r: 0, c: 8 },
+    { t: 'king',     s: 'HAN', r: 1, c: 4 },
+    { t: 'cannon',   s: 'HAN', r: 2, c: 1 },
+    { t: 'cannon',   s: 'HAN', r: 2, c: 7 },
+    { t: 'soldier',  s: 'HAN', r: 3, c: 0 },
+    { t: 'soldier',  s: 'HAN', r: 3, c: 2 },
+    { t: 'soldier',  s: 'HAN', r: 3, c: 4 },
+    { t: 'soldier',  s: 'HAN', r: 3, c: 6 },
+    { t: 'soldier',  s: 'HAN', r: 3, c: 8 },
+    { t: 'chariot',  s: 'CHO', r: 9, c: 0 },
+    { t: 'horse',    s: 'CHO', r: 9, c: 1 },
+    { t: 'elephant', s: 'CHO', r: 9, c: 2 },
+    { t: 'guard',    s: 'CHO', r: 9, c: 3 },
+    { t: 'guard',    s: 'CHO', r: 9, c: 5 },
+    { t: 'elephant', s: 'CHO', r: 9, c: 6 },
+    { t: 'horse',    s: 'CHO', r: 9, c: 7 },
+    { t: 'chariot',  s: 'CHO', r: 9, c: 8 },
+    { t: 'king',     s: 'CHO', r: 8, c: 4 },
+    { t: 'cannon',   s: 'CHO', r: 7, c: 1 },
+    { t: 'cannon',   s: 'CHO', r: 7, c: 7 },
+    { t: 'soldier',  s: 'CHO', r: 6, c: 0 },
+    { t: 'soldier',  s: 'CHO', r: 6, c: 2 },
+    { t: 'soldier',  s: 'CHO', r: 6, c: 4 },
+    { t: 'soldier',  s: 'CHO', r: 6, c: 6 },
+    { t: 'soldier',  s: 'CHO', r: 6, c: 8 },
+  ];
+  return setup.map((p, i) => ({ id: `${p.s[0]}${p.t[0]}${i}`, ...p }));
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────
+const inBounds = (r, c) => r >= 0 && r < ROWS && c >= 0 && c < COLS;
+const opp = (s) => (s === 'CHO' ? 'HAN' : 'CHO');
+
+function pieceAt(board, r, c) {
+  for (let i = 0; i < board.length; i++) {
+    const p = board[i];
+    if (p.r === r && p.c === c) return p;
+  }
+  return null;
+}
+
+// Palace bounds per side
+function inPalace(side, r, c) {
+  if (c < 3 || c > 5) return false;
+  if (side === 'HAN') return r >= 0 && r <= 2;
+  return r >= 7 && r <= 9;
+}
+
+// Palace diagonal intersections (a piece can move diagonally along these)
+const PALACE_DIAG_POINTS = new Set([
+  // HAN palace
+  '0,3','0,5','2,3','2,5','1,4',
+  // CHO palace
+  '7,3','7,5','9,3','9,5','8,4',
+]);
+function isPalaceDiagPoint(r, c) {
+  return PALACE_DIAG_POINTS.has(`${r},${c}`);
+}
+
+// ─── Move generator per piece ─────────────────────────────────────
+function genKingMoves(board, p) {
+  const moves = [];
+  const deltas = [[-1,0],[1,0],[0,-1],[0,1]];
+  // Diagonal only at palace diag points
+  const diag = [[-1,-1],[-1,1],[1,-1],[1,1]];
+
+  for (const [dr, dc] of deltas) {
+    const r = p.r + dr, c = p.c + dc;
+    if (!inBounds(r, c)) continue;
+    if (!inPalace(p.s, r, c)) continue;
+    const tgt = pieceAt(board, r, c);
+    if (tgt && tgt.s === p.s) continue;
+    moves.push({ r, c });
+  }
+  if (isPalaceDiagPoint(p.r, p.c)) {
+    for (const [dr, dc] of diag) {
+      const r = p.r + dr, c = p.c + dc;
+      if (!inBounds(r, c)) continue;
+      if (!inPalace(p.s, r, c)) continue;
+      if (!isPalaceDiagPoint(r, c)) continue;
+      const tgt = pieceAt(board, r, c);
+      if (tgt && tgt.s === p.s) continue;
+      moves.push({ r, c });
+    }
+  }
+  return moves;
+}
+
+function genGuardMoves(board, p) {
+  return genKingMoves(board, p); // same rules — palace bound, orthogonal + palace diag
+}
+
+function genChariotMoves(board, p) {
+  const moves = [];
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+  for (const [dr, dc] of dirs) {
+    let r = p.r + dr, c = p.c + dc;
+    while (inBounds(r, c)) {
+      const tgt = pieceAt(board, r, c);
+      if (!tgt) { moves.push({ r, c }); }
+      else { if (tgt.s !== p.s) moves.push({ r, c }); break; }
+      r += dr; c += dc;
+    }
+  }
+  // Palace diagonal moves (only along palace diag lines)
+  if (isPalaceDiagPoint(p.r, p.c)) {
+    const diag = [[-1,-1],[-1,1],[1,-1],[1,1]];
+    for (const [dr, dc] of diag) {
+      let r = p.r + dr, c = p.c + dc;
+      while (inBounds(r, c) && isPalaceDiagPoint(r, c)) {
+        const tgt = pieceAt(board, r, c);
+        if (!tgt) { moves.push({ r, c }); }
+        else { if (tgt.s !== p.s) moves.push({ r, c }); break; }
+        r += dr; c += dc;
+      }
+    }
+  }
+  return moves;
+}
+
+function genCannonMoves(board, p) {
+  // Cannon: jumps exactly one non-cannon piece; cannot capture another cannon
+  const moves = [];
+  const dirs = [[-1,0],[1,0],[0,-1],[0,1]];
+  for (const [dr, dc] of dirs) {
+    let r = p.r + dr, c = p.c + dc;
+    let screen = null;
+    while (inBounds(r, c)) {
+      const tgt = pieceAt(board, r, c);
+      if (!screen) {
+        if (tgt) {
+          if (tgt.t === 'cannon') break; // cannon can't jump cannon
+          screen = tgt;
+        }
+      } else {
+        if (tgt) {
+          if (tgt.t !== 'cannon' && tgt.s !== p.s) moves.push({ r, c });
+          break;
+        } else {
+          moves.push({ r, c });
+        }
+      }
+      r += dr; c += dc;
+    }
+  }
+  // Palace diagonal cannon moves
+  if (isPalaceDiagPoint(p.r, p.c)) {
+    const diag = [[-1,-1],[-1,1],[1,-1],[1,1]];
+    for (const [dr, dc] of diag) {
+      let r = p.r + dr, c = p.c + dc;
+      let screen = null;
+      while (inBounds(r, c) && isPalaceDiagPoint(r, c)) {
+        const tgt = pieceAt(board, r, c);
+        if (!screen) {
+          if (tgt) {
+            if (tgt.t === 'cannon') break;
+            screen = tgt;
+          }
+        } else {
+          if (tgt) {
+            if (tgt.t !== 'cannon' && tgt.s !== p.s) moves.push({ r, c });
+            break;
+          } else {
+            moves.push({ r, c });
+          }
+        }
+        r += dr; c += dc;
+      }
+    }
+  }
+  return moves;
+}
+
+function genHorseMoves(board, p) {
+  // 1 step orthogonal + 1 step diagonal outward. Blocking piece on first step = 멱
+  const moves = [];
+  const patterns = [
+    [-1, 0, -2, -1], [-1, 0, -2,  1],  // up
+    [ 1, 0,  2, -1], [ 1, 0,  2,  1],  // down
+    [ 0,-1, -1, -2], [ 0,-1,  1, -2],  // left
+    [ 0, 1, -1,  2], [ 0, 1,  1,  2],  // right
+  ];
+  for (const [br, bc, dr, dc] of patterns) {
+    const blockR = p.r + br, blockC = p.c + bc;
+    if (!inBounds(blockR, blockC)) continue;
+    if (pieceAt(board, blockR, blockC)) continue; // 멱
+    const r = p.r + dr, c = p.c + dc;
+    if (!inBounds(r, c)) continue;
+    const tgt = pieceAt(board, r, c);
+    if (tgt && tgt.s === p.s) continue;
+    moves.push({ r, c });
+  }
+  return moves;
+}
+
+function genElephantMoves(board, p) {
+  // 1 step orthogonal + 2 steps diagonal outward. Blocking on first OR mid-diagonal = 멱
+  const moves = [];
+  const patterns = [
+    [-1, 0, -2, -1, -3, -2], [-1, 0, -2,  1, -3,  2],
+    [ 1, 0,  2, -1,  3, -2], [ 1, 0,  2,  1,  3,  2],
+    [ 0,-1, -1, -2, -2, -3], [ 0,-1,  1, -2,  2, -3],
+    [ 0, 1, -1,  2, -2,  3], [ 0, 1,  1,  2,  2,  3],
+  ];
+  for (const [b1r, b1c, b2r, b2c, dr, dc] of patterns) {
+    if (!inBounds(p.r + b1r, p.c + b1c)) continue;
+    if (pieceAt(board, p.r + b1r, p.c + b1c)) continue;
+    if (!inBounds(p.r + b2r, p.c + b2c)) continue;
+    if (pieceAt(board, p.r + b2r, p.c + b2c)) continue;
+    const r = p.r + dr, c = p.c + dc;
+    if (!inBounds(r, c)) continue;
+    const tgt = pieceAt(board, r, c);
+    if (tgt && tgt.s === p.s) continue;
+    moves.push({ r, c });
+  }
+  return moves;
+}
+
+function genSoldierMoves(board, p) {
+  // CHO soldiers move up (r decreases); HAN move down (r increases)
+  const moves = [];
+  const fwd = p.s === 'CHO' ? -1 : 1;
+  const deltas = [[fwd, 0], [0, -1], [0, 1]]; // forward, left, right
+  for (const [dr, dc] of deltas) {
+    const r = p.r + dr, c = p.c + dc;
+    if (!inBounds(r, c)) continue;
+    const tgt = pieceAt(board, r, c);
+    if (tgt && tgt.s === p.s) continue;
+    moves.push({ r, c });
+  }
+  // Palace diagonal forward
+  if (isPalaceDiagPoint(p.r, p.c)) {
+    const dDiag = [[fwd, -1], [fwd, 1]];
+    for (const [dr, dc] of dDiag) {
+      const r = p.r + dr, c = p.c + dc;
+      if (!inBounds(r, c)) continue;
+      if (!isPalaceDiagPoint(r, c)) continue;
+      const tgt = pieceAt(board, r, c);
+      if (tgt && tgt.s === p.s) continue;
+      moves.push({ r, c });
+    }
+  }
+  return moves;
+}
+
+function pieceMoves(board, p) {
+  switch (p.t) {
+    case 'king': return genKingMoves(board, p);
+    case 'guard': return genGuardMoves(board, p);
+    case 'chariot': return genChariotMoves(board, p);
+    case 'cannon': return genCannonMoves(board, p);
+    case 'horse': return genHorseMoves(board, p);
+    case 'elephant': return genElephantMoves(board, p);
+    case 'soldier': return genSoldierMoves(board, p);
+    default: return [];
+  }
+}
+
+function findKing(board, side) {
+  return board.find(p => p.t === 'king' && p.s === side);
+}
+
+// Check: is `side`'s king attacked by any opposing piece?
+function isInCheck(board, side) {
+  const king = findKing(board, side);
+  if (!king) return true;
+  for (const p of board) {
+    if (p.s === side) continue;
+    const moves = pieceMoves(board, p);
+    for (const m of moves) {
+      if (m.r === king.r && m.c === king.c) return true;
+    }
+  }
+  return false;
+}
+
+// Bikjang: two kings face each other on the same column with no pieces between
+function isBikjang(board) {
+  const k1 = findKing(board, 'CHO');
+  const k2 = findKing(board, 'HAN');
+  if (!k1 || !k2) return false;
+  if (k1.c !== k2.c) return false;
+  const lo = Math.min(k1.r, k2.r) + 1;
+  const hi = Math.max(k1.r, k2.r);
+  for (let r = lo; r < hi; r++) {
+    if (pieceAt(board, r, k1.c)) return false;
+  }
+  return true;
+}
+
+function applyMove(board, piece, to) {
+  const next = [];
+  for (const p of board) {
+    if (p.r === to.r && p.c === to.c && p.s !== piece.s) continue; // captured
+    if (p.id === piece.id) {
+      next.push({ ...p, r: to.r, c: to.c });
+    } else {
+      next.push(p);
+    }
+  }
+  return next;
+}
+
+// Filter moves that would leave own king in check (or cause bikjang)
+function legalMovesFor(board, p) {
+  const raw = pieceMoves(board, p);
+  const legal = [];
+  for (const m of raw) {
+    const next = applyMove(board, p, m);
+    if (!isInCheck(next, p.s) && !isBikjang(next)) {
+      legal.push(m);
+    }
+  }
+  return legal;
+}
+
+function allLegalMoves(board, side) {
+  const all = [];
+  for (const p of board) {
+    if (p.s !== side) continue;
+    const moves = legalMovesFor(board, p);
+    for (const m of moves) {
+      all.push({ piece: p, to: m });
+    }
+  }
+  return all;
+}
+
+// ─── AI (Minimax with Alpha-Beta) ─────────────────────────────────
+function evaluate(board, aiSide) {
+  let score = 0;
+  for (const p of board) {
+    const v = PIECE_VALUE[p.t] || 0;
+    score += (p.s === aiSide ? v : -v);
+  }
+  // small positional bias: center column control for soldiers, advanced soldiers
+  for (const p of board) {
+    if (p.t === 'soldier') {
+      const adv = p.s === 'CHO' ? (9 - p.r) : p.r;
+      const bonus = adv * 0.1 + (p.c >= 3 && p.c <= 5 ? 0.2 : 0);
+      score += (p.s === aiSide ? bonus : -bonus);
+    }
+  }
+  return score;
+}
+
+function minimax(board, depth, alpha, beta, maximizing, aiSide) {
+  if (depth === 0) return { score: evaluate(board, aiSide) };
+  const side = maximizing ? aiSide : opp(aiSide);
+  const moves = allLegalMoves(board, side);
+  if (moves.length === 0) {
+    return { score: maximizing ? -99999 + (10 - depth) : 99999 - (10 - depth) };
+  }
+  // move ordering: captures first
+  moves.sort((a, b) => {
+    const ca = pieceAt(board, a.to.r, a.to.c);
+    const cb = pieceAt(board, b.to.r, b.to.c);
+    return (cb ? PIECE_VALUE[cb.t] : 0) - (ca ? PIECE_VALUE[ca.t] : 0);
+  });
+
+  let best = null;
+  if (maximizing) {
+    let value = -Infinity;
+    for (const mv of moves) {
+      const next = applyMove(board, mv.piece, mv.to);
+      const { score } = minimax(next, depth - 1, alpha, beta, false, aiSide);
+      if (score > value) { value = score; best = mv; }
+      alpha = Math.max(alpha, value);
+      if (alpha >= beta) break;
+    }
+    return { score: value, move: best };
+  } else {
+    let value = Infinity;
+    for (const mv of moves) {
+      const next = applyMove(board, mv.piece, mv.to);
+      const { score } = minimax(next, depth - 1, alpha, beta, true, aiSide);
+      if (score < value) { value = score; best = mv; }
+      beta = Math.min(beta, value);
+      if (alpha >= beta) break;
+    }
+    return { score: value, move: best };
+  }
+}
+
+function chooseAIMove(board, aiSide, difficulty) {
+  const all = allLegalMoves(board, aiSide);
+  if (all.length === 0) return null;
+
+  if (difficulty === 'easy') {
+    // 60% capture-priority, 40% random
+    const captures = all.filter(m => pieceAt(board, m.to.r, m.to.c));
+    if (captures.length && Math.random() < 0.6) {
+      captures.sort((a, b) => PIECE_VALUE[pieceAt(board, b.to.r, b.to.c).t] - PIECE_VALUE[pieceAt(board, a.to.r, a.to.c).t]);
+      return captures[0];
+    }
+    return all[Math.floor(Math.random() * all.length)];
+  }
+
+  const depth = difficulty === 'hard' ? 4 : 3;
+  const { move } = minimax(board, depth, -Infinity, Infinity, true, aiSide);
+  return move || all[0];
+}
+
+// ────────────────────────────────────────────────────────────────────
+//  EXPOSE TO WINDOW so subsequent <script type="text/babel"> can read
+// ────────────────────────────────────────────────────────────────────
+Object.assign(window, {
+  ROWS, COLS, PIECE_GLYPHS, PIECE_VALUE, KOREAN_PIECE,
+  initialBoard, pieceAt, inPalace, isPalaceDiagPoint,
+  pieceMoves, legalMovesFor, allLegalMoves, applyMove,
+  isInCheck, isBikjang, findKing, chooseAIMove, opp,
+});
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!--  BOARD + PIECE COMPONENTS                                            -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+const COLORS = {
+  cho: '#0B6E3D', choD: '#054D29',
+  han: '#B72525', hanD: '#7E1717',
+  woodLight: '#EBCD93', woodMid: '#DCB875', woodDark: '#B98F4D',
+  woodLine: '#3A2511',
+  faceLight: '#F4E2BC', faceMid: '#E6CD96', faceShadow: '#A88554',
+};
+
+const OCTAGON_OUTER = "30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30";
+const OCTAGON_INNER = "33,11 67,11 89,33 89,67 67,89 33,89 11,67 11,33";
+const OCTAGON_CLIP  = "polygon(30% 3%, 70% 3%, 97% 30%, 97% 70%, 70% 97%, 30% 97%, 3% 70%, 3% 30%)";
+
+function JanggiPiece({ type, side, size = 34, captured = false, label = 'hanja', glow = false, threatened = false }) {
+  const rawId = React.useId();
+  const id = rawId.replace(/[:]/g, '');
+  const glyph = label === 'kor'
+    ? PIECE_GLYPHS[type].kor
+    : PIECE_GLYPHS[type][side];
+
+  const isCho = side === 'CHO';
+  const charColor = isCho ? COLORS.cho : COLORS.han;
+  const charShadow = isCho ? COLORS.choD : COLORS.hanD;
+
+  const isKing = type === 'king';
+  const charSize = isKing ? 62 : 56;
+  const finalSize = (label === 'kor' && type === 'soldier') ? 34 : charSize;
+
+  return (
+    <div style={{
+      width: size, height: size,
+      position: 'relative',
+      filter: captured ? 'saturate(0.35) brightness(0.85)' : 'none',
+      opacity: captured ? 0.5 : 1,
+    }}>
+      {glow && (
+        <div aria-hidden style={{
+          position: 'absolute', inset: -7,
+          clipPath: OCTAGON_CLIP,
+          background: `radial-gradient(closest-side, ${charColor} 0%, transparent 75%)`,
+          filter: 'blur(2px)', opacity: 0.7,
+        }} />
+      )}
+      {threatened && (
+        <div aria-hidden style={{
+          position: 'absolute', inset: -5,
+          clipPath: OCTAGON_CLIP,
+          background: COLORS.han,
+          filter: 'blur(2px)',
+          animation: 'janggiPulse 1.1s ease-in-out infinite',
+          opacity: 0.75,
+        }} />
+      )}
+
+      <svg viewBox="0 0 100 100" width={size} height={size}
+           style={{ display: 'block', overflow: 'visible', position: 'relative' }}>
+        <defs>
+          <radialGradient id={`face-${id}`} cx="36%" cy="28%" r="80%">
+            <stop offset="0%"   stopColor="#FBEFD2" />
+            <stop offset="55%"  stopColor={COLORS.faceLight} />
+            <stop offset="100%" stopColor={COLORS.faceMid} />
+          </radialGradient>
+          <linearGradient id={`bevel-${id}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stopColor="#FFF4D4" />
+            <stop offset="48%" stopColor={COLORS.faceMid} />
+            <stop offset="100%" stopColor={COLORS.faceShadow} />
+          </linearGradient>
+        </defs>
+
+        <polygon points={OCTAGON_OUTER} transform="translate(0.7,1.4)" fill="rgba(50,30,10,0.55)" />
+        <polygon points={OCTAGON_OUTER} fill={`url(#bevel-${id})`} />
+        <polygon points="31,5 69,5 95,31 95,69 69,95 31,95 5,69 5,31" fill={`url(#face-${id})`} />
+        <polygon points={OCTAGON_INNER} fill="none" stroke={charColor} strokeOpacity="0.55" strokeWidth="1.6" />
+        <polygon points="36,14 64,14 86,36 86,64 64,86 36,86 14,64 14,36" fill="none" stroke={charColor} strokeOpacity="0.22" strokeWidth="0.7" />
+
+        <text x="50" y="50"
+              textAnchor="middle" dominantBaseline="central"
+              dy="-0.04em"
+              fontFamily="'Noto Serif KR', 'Nanum Myeongjo', serif"
+              fontWeight="900"
+              fontSize={finalSize}
+              fill={charColor}
+              style={{
+                letterSpacing: '-0.02em',
+                filter: `drop-shadow(0 1px 0 ${charShadow}55)`,
+              }}>
+          {glyph}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+function JanggiBoard({
+  width = 320,
+  pieces,
+  selected = null,
+  legalMoves = [],
+  lastMove = null,
+  check = false,
+  checkedKing = null,
+  label = 'hanja',
+  flipped = false,
+  onCellClick,
+}) {
+  const cols = COLS, rows = ROWS;
+  const cell = width / (cols - 1);
+  const boardW = width;
+  const boardH = cell * (rows - 1);
+  const pad = cell * 0.6;
+  const totalW = boardW + pad * 2;
+  const totalH = boardH + pad * 2;
+  const pieceSize = cell * 0.94;
+
+  const transformR = (r) => flipped ? (rows - 1 - r) : r;
+  const transformC = (c) => flipped ? (cols - 1 - c) : c;
+  const x = (c) => pad + transformC(c) * cell;
+  const y = (r) => pad + transformR(r) * cell;
+
+  const lineStroke = COLORS.woodLine;
+  const rawLines = [];
+  for (let c = 0; c < cols; c++) {
+    rawLines.push(
+      <line key={`vv${c}`} x1={pad + c*cell} y1={pad} x2={pad + c*cell} y2={pad + boardH}
+            stroke={lineStroke} strokeWidth="1.1" />
+    );
+  }
+  for (let r = 0; r < rows; r++) {
+    rawLines.push(
+      <line key={`hh${r}`} x1={pad} y1={pad + r*cell} x2={pad + boardW} y2={pad + r*cell}
+            stroke={lineStroke} strokeWidth="1.1" />
+    );
+  }
+  const palaceDiag = (r0, c0) => ([
+    <line key={`pd1-${r0}`} x1={pad+c0*cell} y1={pad+r0*cell} x2={pad+(c0+2)*cell} y2={pad+(r0+2)*cell}
+          stroke={lineStroke} strokeWidth="1.1" />,
+    <line key={`pd2-${r0}`} x1={pad+(c0+2)*cell} y1={pad+r0*cell} x2={pad+c0*cell} y2={pad+(r0+2)*cell}
+          stroke={lineStroke} strokeWidth="1.1" />,
+  ]);
+
+  const handleClick = (e) => {
+    if (!onCellClick) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = e.clientX - rect.left;
+    const py = e.clientY - rect.top;
+    const cx = Math.round((px - pad) / cell);
+    const cy = Math.round((py - pad) / cell);
+    if (cx < 0 || cx >= cols || cy < 0 || cy >= rows) return;
+    const realR = flipped ? (rows - 1 - cy) : cy;
+    const realC = flipped ? (cols - 1 - cx) : cx;
+    onCellClick(realR, realC);
+  };
+
+  return (
+    <div onClick={handleClick} style={{
+      position: 'relative',
+      width: totalW, height: totalH,
+      borderRadius: 10,
+      cursor: onCellClick ? 'pointer' : 'default',
+      background: `radial-gradient(120% 80% at 50% 50%, ${COLORS.woodLight} 0%, ${COLORS.woodMid} 65%, ${COLORS.woodDark} 100%)`,
+      boxShadow: `0 14px 32px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(58,37,17,0.35), inset 0 0 12px rgba(255,235,200,0.25)`,
+      overflow: 'hidden',
+      animation: check ? 'checkFlash 1.2s ease-in-out infinite' : 'none',
+    }}>
+      <div aria-hidden style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: `
+          repeating-linear-gradient(180deg, rgba(120,75,30,0.04) 0px, rgba(120,75,30,0.04) 1px, transparent 1px, transparent 4px),
+          repeating-linear-gradient(90deg, rgba(60,35,10,0.02) 0px, rgba(60,35,10,0.02) 1px, transparent 1px, transparent 7px)`,
+        mixBlendMode: 'multiply', opacity: 0.6,
+      }} />
+      <div aria-hidden style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        boxShadow: 'inset 0 0 40px rgba(80,45,15,0.35)',
+        borderRadius: 10,
+      }} />
+
+      <svg width={totalW} height={totalH} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {rawLines}
+        {palaceDiag(0, 3)}
+        {palaceDiag(7, 3)}
+
+        <g opacity="0.65">
+          <text x={pad + 2*cell - cell * 0.32} y={pad + 4*cell + cell * 0.62}
+                fill={COLORS.woodLine}
+                fontFamily="'Noto Serif KR', serif"
+                fontSize={cell * 0.5}
+                fontWeight="700"
+                letterSpacing={cell * 0.18}>楚 河</text>
+          <text x={pad + 6*cell - cell * 0.32} y={pad + 4*cell + cell * 0.62}
+                fill={COLORS.woodLine}
+                fontFamily="'Noto Serif KR', serif"
+                fontSize={cell * 0.5}
+                fontWeight="700"
+                letterSpacing={cell * 0.18}>漢 界</text>
+        </g>
+
+        {lastMove && (() => {
+          const fx = pad + transformC(lastMove.from.c) * cell;
+          const fy = pad + transformR(lastMove.from.r) * cell;
+          const tx = pad + transformC(lastMove.to.c) * cell;
+          const ty = pad + transformR(lastMove.to.r) * cell;
+          return (
+            <g>
+              <circle cx={fx} cy={fy} r={cell*0.35} fill="rgba(180,90,30,0.18)" />
+              <line x1={fx} y1={fy} x2={tx} y2={ty}
+                    stroke="rgba(180,90,30,0.55)" strokeWidth="2" strokeDasharray="3 4" />
+            </g>
+          );
+        })()}
+      </svg>
+
+      {/* legal move dots */}
+      {legalMoves.map((m, i) => {
+        const occupied = pieceAt(pieces, m.r, m.c);
+        const cx = pad + transformC(m.c) * cell;
+        const cy = pad + transformR(m.r) * cell;
+        if (occupied) {
+          return (
+            <svg key={`lm${i}`} style={{
+              position: 'absolute',
+              left: cx - pieceSize/2 - 4,
+              top:  cy - pieceSize/2 - 4,
+              width: pieceSize + 8, height: pieceSize + 8,
+              overflow: 'visible', pointerEvents: 'none',
+            }} viewBox="0 0 100 100">
+              <polygon points={OCTAGON_OUTER} fill="none"
+                       stroke={COLORS.han} strokeWidth="3"
+                       style={{ filter: `drop-shadow(0 0 6px ${COLORS.han}aa)` }} />
+            </svg>
+          );
+        }
+        return (
+          <div key={`lm${i}`} style={{
+            position: 'absolute',
+            left: cx - 7, top: cy - 7,
+            width: 14, height: 14, borderRadius: '50%',
+            background: COLORS.woodLine, opacity: 0.5,
+            pointerEvents: 'none',
+            boxShadow: '0 0 6px rgba(58,37,17,0.6)',
+          }} />
+        );
+      })}
+
+      {/* selected ring */}
+      {selected && (
+        <svg style={{
+          position: 'absolute',
+          left: pad + transformC(selected.c) * cell - pieceSize/2 - 6,
+          top:  pad + transformR(selected.r) * cell - pieceSize/2 - 6,
+          width: pieceSize + 12, height: pieceSize + 12,
+          overflow: 'visible', pointerEvents: 'none',
+        }} viewBox="0 0 100 100">
+          <polygon points={OCTAGON_OUTER} fill="none"
+                   stroke={COLORS.cho} strokeWidth="3"
+                   style={{ filter: `drop-shadow(0 0 8px ${COLORS.cho})` }} />
+        </svg>
+      )}
+
+      {/* pieces */}
+      {pieces.map((p) => (
+        <div key={p.id} style={{
+          position: 'absolute',
+          left: pad + transformC(p.c) * cell - pieceSize/2,
+          top:  pad + transformR(p.r) * cell - pieceSize/2,
+          width: pieceSize, height: pieceSize,
+          transition: 'left 240ms cubic-bezier(0.22,1,0.36,1), top 240ms cubic-bezier(0.22,1,0.36,1)',
+          pointerEvents: 'none',
+        }}>
+          <JanggiPiece
+            type={p.t} side={p.s}
+            size={pieceSize}
+            label={label}
+            glow={selected && selected.r === p.r && selected.c === p.c}
+            threatened={check && checkedKing && checkedKing.r === p.r && checkedKing.c === p.c}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CapturedRow({ captured = [], side = 'HAN', label = 'hanja' }) {
+  const order = ['chariot','cannon','horse','elephant','guard','soldier'];
+  const grouped = {};
+  captured.forEach(t => { grouped[t] = (grouped[t]||0)+1; });
+  const items = order.filter(t => grouped[t]);
+  if (items.length === 0) {
+    return <div style={{ color: '#5D4D3B', fontSize: 11, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.1em' }}>—</div>;
+  }
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+      {items.map(t => (
+        <div key={t} style={{
+          display: 'flex', alignItems: 'center', gap: 3,
+          padding: '3px 8px 3px 3px', borderRadius: 9999,
+          background: 'rgba(40,28,16,0.5)',
+          border: '1px solid rgba(94,72,46,0.5)',
+        }}>
+          <JanggiPiece type={t} side={side} size={20} label={label} />
+          <span style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: 11, color: '#B5A48F', fontWeight: 500,
+          }}>×{grouped[t]}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+Object.assign(window, { JanggiBoard, JanggiPiece, CapturedRow });
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<!--  APP — HOME / SETUP / GAME / RESULT screens                          -->
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<script type="text/babel" data-presets="env,react">
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+// ─── UI atoms ─────────────────────────────────────────────────────
+const Eyebrow = ({ children, style = {} }) => (
+  <span style={{
+    fontFamily: 'JetBrains Mono, monospace',
+    fontSize: 10, fontWeight: 500,
+    letterSpacing: '0.16em', textTransform: 'uppercase',
+    color: 'var(--fg3)', ...style,
+  }}>{children}</span>
+);
+
+const PrimaryCTA = ({ children, onClick, disabled, style = {} }) => (
+  <button onClick={onClick} disabled={disabled} style={{
+    width: '100%', height: 56, borderRadius: 12,
+    background: disabled
+      ? '#E6DFCF'
+      : `linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%)`,
+    border: `1px solid ${disabled ? '#C8BBA0' : '#7A5818'}`,
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    boxShadow: disabled ? 'none' : `inset 0 1px 0 rgba(255,235,180,0.6), 0 6px 16px rgba(120,80,20,0.25)`,
+    color: disabled ? '#A99F8B' : '#2D1F08',
+    fontFamily: 'inherit', fontWeight: 700, fontSize: 16, letterSpacing: '-0.01em',
+    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+    transition: 'transform 100ms',
+    ...style,
+  }}
+  onMouseDown={e => !disabled && (e.currentTarget.style.transform = 'translateY(1px)')}
+  onMouseUp={e => (e.currentTarget.style.transform = '')}
+  onMouseLeave={e => (e.currentTarget.style.transform = '')}>{children}</button>
+);
+
+const GhostBtn = ({ children, onClick, active = false, style = {} }) => (
+  <button onClick={onClick} style={{
+    height: 48, borderRadius: 10, padding: '0 16px',
+    background: active ? 'var(--bg-card)' : 'var(--bg-elev)',
+    border: `1px solid ${active ? 'var(--gold-d)' : 'var(--border)'}`,
+    cursor: 'pointer',
+    color: 'var(--fg1)',
+    fontFamily: 'inherit', fontWeight: 500, fontSize: 14,
+    display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+    transition: 'all 140ms',
+    ...style,
+  }}>{children}</button>
+);
+
+const IconBtn = ({ children, onClick, style = {} }) => (
+  <button onClick={onClick} style={{
+    width: 38, height: 38, borderRadius: 10,
+    background: 'var(--bg-elev)',
+    border: `1px solid var(--border)`,
+    color: 'var(--fg1)', cursor: 'pointer',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    ...style,
+  }}>{children}</button>
+);
+
+// ─── HOME ─────────────────────────────────────────────────────────
+function HomeScreen({ onStart, onHelp }) {
+  return (
+    <div className="fade-in" style={{
+      padding: '40px 24px 32px',
+      display: 'flex', flexDirection: 'column', minHeight: '100%', height: '100%',
+    }}>
+      <div style={{ flex: 1 }}>
+        <Eyebrow>새 대국을 시작합니다</Eyebrow>
+        <div style={{
+          marginTop: 14,
+          fontFamily: "'Noto Serif KR', serif",
+          fontWeight: 900,
+          fontSize: 64, lineHeight: 1.0, letterSpacing: '-0.03em',
+        }}>
+          <span style={{ color: 'var(--cho)' }}>楚</span>
+          <span style={{ color: 'var(--fg3)', margin: '0 12px', fontWeight: 400 }}>·</span>
+          <span style={{ color: 'var(--han)' }}>漢</span>
+        </div>
+        <div style={{
+          marginTop: 4, fontWeight: 300, fontSize: 28,
+          color: 'var(--fg1)', letterSpacing: '-0.02em',
+        }}>한 수, 다시 두다.</div>
+        <p style={{
+          marginTop: 16, fontSize: 14, lineHeight: 1.55,
+          color: 'var(--fg3)', maxWidth: 280,
+        }}>설치 없이, 광고 없이. 가벼운 한 판의 장기.</p>
+
+        <div style={{
+          marginTop: 24,
+          display: 'flex', justifyContent: 'center',
+        }}>
+          <div style={{
+            transform: 'perspective(900px) rotateX(22deg) scale(0.82)',
+            transformOrigin: 'center top',
+            filter: 'drop-shadow(0 24px 32px rgba(80,55,20,0.22))',
+          }}>
+            <JanggiBoard width={260} pieces={initialBoard()} />
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+        <PrimaryCTA onClick={onStart}>
+          새 대국 시작
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </PrimaryCTA>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <GhostBtn style={{ flex: 1 }} onClick={onHelp}>도움말</GhostBtn>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── SETUP ────────────────────────────────────────────────────────
+function SetupScreen({ onStart, onBack }) {
+  const [difficulty, setDifficulty] = useState('normal');
+  const [side, setSide] = useState('CHO');
+
+  return (
+    <div className="fade-in" style={{
+      padding: '24px 24px 32px',
+      display: 'flex', flexDirection: 'column', minHeight: '100%', height: '100%',
+    }}>
+      <div>
+        <IconBtn onClick={onBack} aria-label="뒤로">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </IconBtn>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <div style={{
+          fontFamily: "'Noto Serif KR', serif", fontWeight: 700,
+          fontSize: 28, color: 'var(--fg1)', letterSpacing: '-0.02em',
+        }}>대국 설정</div>
+        <p style={{ marginTop: 6, color: 'var(--fg3)', fontSize: 14 }}>
+          AI 난이도와 진영을 선택하세요.
+        </p>
+      </div>
+
+      <div style={{ marginTop: 28 }}>
+        <Eyebrow>AI 난이도</Eyebrow>
+        <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { id: 'easy',   name: '쉬움',    desc: '입문자에게 추천. 가끔 실수합니다.' },
+            { id: 'normal', name: '보통',    desc: '3수 앞을 읽습니다. 균형 잡힌 상대.' },
+            { id: 'hard',   name: '어려움',  desc: '4수 앞 + 평가 함수. 한 수 한 수 신중하게.' },
+          ].map(opt => (
+            <button key={opt.id} onClick={() => setDifficulty(opt.id)} style={{
+              textAlign: 'left', padding: '14px 16px', borderRadius: 12,
+              background: difficulty === opt.id ? 'var(--bg-card)' : 'var(--bg-elev)',
+              border: `1px solid ${difficulty === opt.id ? 'var(--gold-d)' : 'var(--border)'}`,
+              cursor: 'pointer', color: 'var(--fg1)', fontFamily: 'inherit',
+              transition: 'all 160ms',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>{opt.name}</div>
+                <div style={{
+                  width: 18, height: 18, borderRadius: '50%',
+                  border: `2px solid ${difficulty === opt.id ? 'var(--gold)' : 'var(--fg4)'}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {difficulty === opt.id && <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--gold)' }} />}
+                </div>
+              </div>
+              <div style={{ marginTop: 4, fontSize: 12.5, color: 'var(--fg3)' }}>{opt.desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 24 }}>
+        <Eyebrow>내 진영</Eyebrow>
+        <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          {[
+            { id: 'CHO', glyph: '楚', name: '초 (선수)', color: 'var(--cho)', bg: 'var(--cho-bg)' },
+            { id: 'HAN', glyph: '漢', name: '한 (후수)', color: 'var(--han)', bg: 'var(--han-bg)' },
+          ].map(opt => (
+            <button key={opt.id} onClick={() => setSide(opt.id)} style={{
+              padding: '20px 12px', borderRadius: 14,
+              background: side === opt.id ? opt.bg : 'var(--bg-elev)',
+              border: `1.5px solid ${side === opt.id ? opt.color : 'var(--border)'}`,
+              cursor: 'pointer', color: 'var(--fg1)', fontFamily: 'inherit',
+              transition: 'all 180ms',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
+            }}>
+              <div style={{
+                fontFamily: "'Noto Serif KR', serif", fontWeight: 900,
+                fontSize: 42, lineHeight: 1, color: opt.color,
+              }}>{opt.glyph}</div>
+              <div style={{ fontWeight: 600, fontSize: 13.5 }}>{opt.name}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: 'auto', paddingTop: 24 }}>
+        <PrimaryCTA onClick={() => onStart({ difficulty, side })}>
+          대국 시작
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </PrimaryCTA>
+      </div>
+    </div>
+  );
+}
+
+// ─── GAME ─────────────────────────────────────────────────────────
+function GameScreen({ config, onExit, onResult }) {
+  const { difficulty, side: playerSide } = config;
+  const aiSide = playerSide === 'CHO' ? 'HAN' : 'CHO';
+
+  const [board, setBoard] = useState(() => initialBoard());
+  const [turn, setTurn] = useState('CHO'); // CHO always moves first in this build
+  const [selected, setSelected] = useState(null);
+  const [legalMoves, setLegalMoves] = useState([]);
+  const [lastMove, setLastMove] = useState(null);
+  const [moveHistory, setMoveHistory] = useState([]); // for undo
+  const [moveLog, setMoveLog] = useState([]);
+  const [thinking, setThinking] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [checkedKing, setCheckedKing] = useState(null);
+  const [checkMessage, setCheckMessage] = useState(false);
+  const [label, setLabel] = useState('hanja');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [boardWidth, setBoardWidth] = useState(320);
+  const [startedAt] = useState(() => Date.now());
+
+  const boardWrapRef = useRef(null);
+
+  // responsive board size
+  useEffect(() => {
+    function measure() {
+      if (!boardWrapRef.current) return;
+      const w = boardWrapRef.current.clientWidth;
+      // board cell = w / (1 + 0.6*2/(COLS-1))  — use simpler: pad takes ~12% width total
+      // We need totalW <= container. totalW = boardW + 2*pad = boardW*(1 + 1.2/(COLS-1)) = boardW * 1.15
+      const bw = Math.floor(Math.min(w / 1.18, 360));
+      setBoardWidth(bw);
+    }
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
+
+  // captured pieces (derived)
+  const capturedByCho = [];
+  const capturedByHan = [];
+  const initial = initialBoard();
+  const initCounts = { CHO: {}, HAN: {} };
+  for (const p of initial) {
+    initCounts[p.s][p.t] = (initCounts[p.s][p.t]||0) + 1;
+  }
+  const liveCounts = { CHO: {}, HAN: {} };
+  for (const p of board) {
+    liveCounts[p.s][p.t] = (liveCounts[p.s][p.t]||0) + 1;
+  }
+  for (const s of ['CHO','HAN']) {
+    for (const t of Object.keys(initCounts[s])) {
+      const diff = (initCounts[s][t]||0) - (liveCounts[s][t]||0);
+      for (let i = 0; i < diff; i++) {
+        if (s === 'CHO') capturedByHan.push(t);
+        else capturedByCho.push(t);
+      }
+    }
+  }
+
+  // Check detection on every board change
+  useEffect(() => {
+    const inCheck = isInCheck(board, turn);
+    setCheck(inCheck);
+    if (inCheck) {
+      const k = findKing(board, turn);
+      setCheckedKing(k);
+      setCheckMessage(true);
+      const tid = setTimeout(() => setCheckMessage(false), 1400);
+      return () => clearTimeout(tid);
+    } else {
+      setCheckedKing(null);
+    }
+  }, [board, turn]);
+
+  // AI turn
+  useEffect(() => {
+    if (turn !== aiSide) return;
+    // Check end-of-game first
+    const moves = allLegalMoves(board, aiSide);
+    if (moves.length === 0) {
+      // AI has no moves: player wins
+      const cm = isInCheck(board, aiSide);
+      onResult({
+        winner: playerSide,
+        reason: cm ? '외통수' : '스테일메이트',
+        moves: moveLog.length,
+        elapsedMs: Date.now() - startedAt,
+      });
+      return;
+    }
+
+    setThinking(true);
+    const delay = difficulty === 'hard' ? 600 : difficulty === 'normal' ? 400 : 280;
+    const tid = setTimeout(() => {
+      const mv = chooseAIMove(board, aiSide, difficulty);
+      if (mv) {
+        const captured = pieceAt(board, mv.to.r, mv.to.c);
+        const next = applyMove(board, mv.piece, mv.to);
+        setBoard(next);
+        setLastMove({ from: { r: mv.piece.r, c: mv.piece.c }, to: mv.to });
+        setMoveHistory(h => [...h, { board, turn }]);
+        setMoveLog(log => [...log, formatMove(mv.piece, mv.to, captured)]);
+        setTurn(playerSide);
+      }
+      setThinking(false);
+    }, delay);
+    return () => clearTimeout(tid);
+  }, [turn]); // eslint-disable-line
+
+  // After player move, check if player has no moves
+  useEffect(() => {
+    if (turn !== playerSide) return;
+    if (moveLog.length === 0) return;
+    const moves = allLegalMoves(board, playerSide);
+    if (moves.length === 0) {
+      const cm = isInCheck(board, playerSide);
+      onResult({
+        winner: aiSide,
+        reason: cm ? '외통수' : '스테일메이트',
+        moves: moveLog.length,
+        elapsedMs: Date.now() - startedAt,
+      });
+    }
+  }, [turn, board]); // eslint-disable-line
+
+  function formatMove(piece, to, captured) {
+    const pName = KOREAN_PIECE[piece.t];
+    const fromCol = piece.c + 1;
+    const toCol = to.c + 1;
+    const cap = captured ? `×${KOREAN_PIECE[captured.t]}` : '';
+    return `${piece.s === 'CHO' ? '초' : '한'} ${pName}${fromCol}→${toCol}${cap}`;
+  }
+
+  const handleCellClick = (r, c) => {
+    if (turn !== playerSide || thinking) return;
+    const piece = pieceAt(board, r, c);
+
+    if (selected) {
+      // if clicked a legal move destination
+      if (legalMoves.some(m => m.r === r && m.c === c)) {
+        const captured = pieceAt(board, r, c);
+        const selPiece = pieceAt(board, selected.r, selected.c);
+        const next = applyMove(board, selPiece, { r, c });
+        setMoveHistory(h => [...h, { board, turn }]);
+        setBoard(next);
+        setLastMove({ from: { r: selected.r, c: selected.c }, to: { r, c } });
+        setMoveLog(log => [...log, formatMove(selPiece, { r, c }, captured)]);
+        setSelected(null);
+        setLegalMoves([]);
+        setTurn(aiSide);
+        return;
+      }
+      // clicked same piece: deselect
+      if (piece && piece.r === selected.r && piece.c === selected.c) {
+        setSelected(null); setLegalMoves([]); return;
+      }
+      // clicked another own piece: re-select
+      if (piece && piece.s === playerSide) {
+        setSelected({ r, c });
+        setLegalMoves(legalMovesFor(board, piece));
+        return;
+      }
+      // clicked empty or enemy non-legal: deselect
+      setSelected(null); setLegalMoves([]); return;
+    }
+
+    if (piece && piece.s === playerSide) {
+      setSelected({ r, c });
+      setLegalMoves(legalMovesFor(board, piece));
+    }
+  };
+
+  const handleUndo = () => {
+    if (thinking) return;
+    if (moveHistory.length < 2) return; // need to undo both player+AI
+    const newHistory = moveHistory.slice(0, -2);
+    const lastState = moveHistory[moveHistory.length - 2];
+    setBoard(lastState.board);
+    setTurn(lastState.turn);
+    setMoveHistory(newHistory);
+    setMoveLog(log => log.slice(0, -2));
+    setSelected(null);
+    setLegalMoves([]);
+    setLastMove(null);
+    setMenuOpen(false);
+  };
+
+  const handleResign = () => {
+    onResult({
+      winner: aiSide,
+      reason: '기권',
+      moves: moveLog.length,
+      elapsedMs: Date.now() - startedAt,
+    });
+  };
+
+  const turnText = turn === playerSide ? '내 차례' : 'AI 차례';
+  const turnColor = turn === 'CHO' ? 'var(--cho)' : 'var(--han)';
+
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column',
+      minHeight: '100%', height: '100%',
+      padding: '16px 16px 20px',
+      position: 'relative',
+    }}>
+      {/* Top bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <IconBtn onClick={onExit} aria-label="나가기">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </IconBtn>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 8,
+          padding: '6px 14px', borderRadius: 9999,
+          background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: turnColor,
+            boxShadow: `0 0 8px ${turnColor}`,
+          }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg1)' }}>
+            {turnText}
+          </span>
+          {thinking && (
+            <span style={{ fontSize: 11, color: 'var(--fg3)', fontFamily: 'JetBrains Mono, monospace' }}>
+              생각중…
+            </span>
+          )}
+        </div>
+        <IconBtn onClick={() => setMenuOpen(true)} aria-label="메뉴">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/>
+          </svg>
+        </IconBtn>
+      </div>
+
+      {/* Opponent captured */}
+      <div style={{
+        marginTop: 12, minHeight: 32,
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <Eyebrow style={{ flexShrink: 0 }}>
+          {aiSide === 'CHO' ? '초' : '한'} 잃은
+        </Eyebrow>
+        <CapturedRow captured={aiSide === 'CHO' ? capturedByHan : capturedByCho} side={aiSide} label={label} />
+      </div>
+
+      {/* Board */}
+      <div ref={boardWrapRef} style={{
+        flex: '0 0 auto', marginTop: 10,
+        display: 'flex', justifyContent: 'center', position: 'relative',
+      }}>
+        <JanggiBoard
+          width={boardWidth}
+          pieces={board}
+          selected={selected}
+          legalMoves={legalMoves}
+          lastMove={lastMove}
+          check={check}
+          checkedKing={checkedKing}
+          label={label}
+          flipped={playerSide === 'HAN'}
+          onCellClick={handleCellClick}
+        />
+        {checkMessage && (
+          <div style={{
+            position: 'absolute',
+            top: '50%', left: '50%',
+            transform: 'translate(-50%, -50%)',
+            padding: '12px 28px', borderRadius: 14,
+            background: 'rgba(190,42,42,0.92)',
+            border: '2px solid #fff',
+            fontFamily: "'Noto Serif KR', serif",
+            fontWeight: 900, fontSize: 32, color: '#fff',
+            letterSpacing: '0.1em',
+            boxShadow: '0 12px 36px rgba(0,0,0,0.6), 0 0 40px rgba(190,42,42,0.8)',
+            pointerEvents: 'none',
+            animation: 'fadeIn 200ms ease-out',
+          }}>장군!</div>
+        )}
+      </div>
+
+      {/* My captured */}
+      <div style={{
+        marginTop: 10, minHeight: 32,
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <Eyebrow style={{ flexShrink: 0 }}>
+          {playerSide === 'CHO' ? '초' : '한'} 잃은
+        </Eyebrow>
+        <CapturedRow captured={playerSide === 'CHO' ? capturedByHan : capturedByCho} side={playerSide} label={label} />
+      </div>
+
+      {/* Bottom info bar */}
+      <div style={{
+        marginTop: 'auto', paddingTop: 12,
+        display: 'flex', gap: 8, alignItems: 'stretch',
+      }}>
+        <div style={{
+          flex: 1, padding: '10px 14px', borderRadius: 12,
+          background: 'var(--bg-elev)', border: '1px solid var(--border)',
+          display: 'flex', flexDirection: 'column', gap: 2,
+        }}>
+          <Eyebrow>최근 수</Eyebrow>
+          <div style={{
+            fontSize: 13, color: 'var(--fg1)',
+            fontFamily: 'JetBrains Mono, monospace',
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          }}>{moveLog[moveLog.length-1] || '—'}</div>
+        </div>
+        <div style={{
+          padding: '10px 14px', borderRadius: 12,
+          background: 'var(--bg-elev)', border: '1px solid var(--border)',
+          display: 'flex', flexDirection: 'column', gap: 2, minWidth: 70,
+          alignItems: 'flex-end',
+        }}>
+          <Eyebrow>수</Eyebrow>
+          <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--fg1)', fontFamily: 'JetBrains Mono, monospace' }}>
+            {moveLog.length}
+          </div>
+        </div>
+      </div>
+
+      {menuOpen && (
+        <MenuSheet
+          onClose={() => setMenuOpen(false)}
+          onUndo={handleUndo}
+          canUndo={moveHistory.length >= 2 && !thinking}
+          onResign={() => { setMenuOpen(false); handleResign(); }}
+          onExit={onExit}
+          label={label}
+          setLabel={setLabel}
+        />
+      )}
+    </div>
+  );
+}
+
+// ─── Menu sheet ───────────────────────────────────────────────────
+function MenuSheet({ onClose, onUndo, canUndo, onResign, onExit, label, setLabel }) {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, zIndex: 50,
+      display: 'flex', alignItems: 'flex-end',
+    }}>
+      <div onClick={onClose} style={{
+        position: 'absolute', inset: 0,
+        background: 'rgba(0,0,0,0.55)',
+        animation: 'backdropIn 200ms both',
+      }} />
+      <div style={{
+        position: 'relative', width: '100%',
+        background: 'var(--bg-elev)',
+        borderTopLeftRadius: 24, borderTopRightRadius: 24,
+        border: '1px solid var(--border)',
+        padding: '14px 20px 28px',
+        animation: 'slideUp 320ms cubic-bezier(0.22,1,0.36,1) both',
+      }}>
+        <div style={{
+          width: 40, height: 4, borderRadius: 2,
+          background: 'var(--border-hi)', margin: '0 auto 14px',
+        }} />
+        <Eyebrow style={{ display: 'block', marginBottom: 14 }}>대국 메뉴</Eyebrow>
+
+        <button onClick={canUndo ? onUndo : undefined} disabled={!canUndo} style={menuItemStyle(canUndo)}>
+          <MenuIcon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 7v6h6M3 13a9 9 0 1 0 3-7"/></svg></MenuIcon>
+          <div style={{ flex: 1, textAlign: 'left' }}>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>한 수 무르기</div>
+            <div style={{ fontSize: 12, color: 'var(--fg3)' }}>{canUndo ? '직전 양측 수를 되돌립니다' : '되돌릴 수 없습니다'}</div>
+          </div>
+        </button>
+
+        <button onClick={() => setLabel(label === 'hanja' ? 'kor' : 'hanja')} style={menuItemStyle(true)}>
+          <MenuIcon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 5h16M4 12h16M4 19h10"/></svg></MenuIcon>
+          <div style={{ flex: 1, textAlign: 'left' }}>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>기물 표기</div>
+            <div style={{ fontSize: 12, color: 'var(--fg3)' }}>{label === 'hanja' ? '한자 → 한글로 전환' : '한글 → 한자로 전환'}</div>
+          </div>
+        </button>
+
+        <button onClick={onResign} style={menuItemStyle(true)}>
+          <MenuIcon style={{ color: 'var(--han)' }}><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 21V4a1 1 0 0 1 1-1h11l-2 5 2 5H5"/></svg></MenuIcon>
+          <div style={{ flex: 1, textAlign: 'left' }}>
+            <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--han)' }}>기권</div>
+            <div style={{ fontSize: 12, color: 'var(--fg3)' }}>이 판을 포기합니다</div>
+          </div>
+        </button>
+
+        <button onClick={onExit} style={menuItemStyle(true)}>
+          <MenuIcon><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg></MenuIcon>
+          <div style={{ flex: 1, textAlign: 'left' }}>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>메인으로</div>
+            <div style={{ fontSize: 12, color: 'var(--fg3)' }}>홈 화면으로 돌아갑니다</div>
+          </div>
+        </button>
+
+        <button onClick={onClose} style={{
+          marginTop: 14, width: '100%', height: 44, borderRadius: 12,
+          background: 'transparent', border: '1px solid var(--border)',
+          color: 'var(--fg2)', fontFamily: 'inherit', fontWeight: 500,
+          fontSize: 14, cursor: 'pointer',
+        }}>닫기</button>
+      </div>
+    </div>
+  );
+}
+const MenuIcon = ({ children, style = {} }) => (
+  <div style={{ width: 36, height: 36, borderRadius: 10,
+    background: 'var(--bg-card)', border: '1px solid var(--border)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    color: 'var(--fg1)', flexShrink: 0, ...style,
+  }}>{children}</div>
+);
+const menuItemStyle = (enabled) => ({
+  display: 'flex', alignItems: 'center', gap: 12,
+  width: '100%', padding: '10px 8px', borderRadius: 10,
+  background: 'transparent', border: 'none',
+  cursor: enabled ? 'pointer' : 'not-allowed',
+  opacity: enabled ? 1 : 0.5,
+  color: 'var(--fg1)', fontFamily: 'inherit',
+  textAlign: 'left',
+});
+
+// ─── RESULT ───────────────────────────────────────────────────────
+function ResultScreen({ result, config, onReplay, onHome }) {
+  const won = result.winner === config.side;
+  const mins = Math.floor(result.elapsedMs / 60000);
+  const secs = Math.floor((result.elapsedMs % 60000) / 1000);
+  const elapsed = `${mins}분 ${secs}초`;
+
+  return (
+    <div className="fade-in" style={{
+      padding: '32px 24px', height: '100%',
+      display: 'flex', flexDirection: 'column',
+    }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <Eyebrow style={{ color: won ? 'var(--gold)' : 'var(--fg3)' }}>
+          {won ? '승리' : '패배'}
+        </Eyebrow>
+        <div style={{
+          marginTop: 14,
+          fontFamily: "'Noto Serif KR', serif",
+          fontWeight: 900,
+          fontSize: 88, lineHeight: 1, letterSpacing: '-0.04em',
+          color: won ? 'var(--gold-d)' : 'var(--fg2)',
+          textShadow: won ? '0 4px 28px rgba(180,134,58,0.35)' : 'none',
+        }}>
+          {won ? '勝' : '敗'}
+        </div>
+        <div style={{
+          marginTop: 12, fontSize: 22, fontWeight: 700,
+          color: 'var(--fg1)', letterSpacing: '-0.02em',
+        }}>
+          {won ? '잘 두셨습니다.' : '아쉽습니다.'}
+        </div>
+        <div style={{ marginTop: 4, color: 'var(--fg3)', fontSize: 14 }}>
+          {result.reason} · {result.winner === 'CHO' ? '초' : '한'} 승
+        </div>
+
+        <div style={{
+          marginTop: 32, width: '100%',
+          padding: 16, borderRadius: 14,
+          background: 'var(--bg-elev)', border: '1px solid var(--border)',
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <Eyebrow>총 수</Eyebrow>
+              <div style={{ marginTop: 4, fontSize: 22, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>{result.moves}</div>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <Eyebrow>소요 시간</Eyebrow>
+              <div style={{ marginTop: 4, fontSize: 22, fontWeight: 700, fontFamily: 'JetBrains Mono, monospace' }}>{elapsed}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <PrimaryCTA onClick={onReplay}>다시 하기</PrimaryCTA>
+        <GhostBtn onClick={onHome} style={{ width: '100%', height: 48 }}>메인으로</GhostBtn>
+      </div>
+    </div>
+  );
+}
+
+// ─── HELP ────────────────────────────────────────────────────────
+const HelpSectionTitle = ({ num, children }) => (
+  <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 28, marginBottom: 10 }}>
+    <span style={{
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 11, fontWeight: 600,
+      color: 'var(--gold-d)',
+      letterSpacing: '0.12em',
+    }}>{num}</span>
+    <span style={{
+      fontFamily: "'Noto Serif KR', serif",
+      fontWeight: 700, fontSize: 19,
+      color: 'var(--fg1)', letterSpacing: '-0.02em',
+    }}>{children}</span>
+  </div>
+);
+
+const HelpCard = ({ children, accent, style = {} }) => (
+  <div style={{
+    padding: '14px 16px', borderRadius: 12,
+    background: 'var(--bg-elev)',
+    border: `1px solid var(--border)`,
+    borderLeft: accent ? `3px solid ${accent}` : `1px solid var(--border)`,
+    ...style,
+  }}>{children}</div>
+);
+
+const Kbd = ({ children }) => (
+  <span style={{
+    display: 'inline-block',
+    padding: '1px 7px', borderRadius: 6,
+    background: 'var(--bg-card)', border: '1px solid var(--border)',
+    fontFamily: 'JetBrains Mono, monospace',
+    fontSize: 11, fontWeight: 600,
+    color: 'var(--fg2)',
+    margin: '0 2px',
+  }}>{children}</span>
+);
+
+function BoardDiagram() {
+  // 9x10 grid showing palace + river annotation
+  const w = 260, cols = 9, rows = 10;
+  const pad = 14;
+  const cell = (w - pad * 2) / (cols - 1);
+  const h = pad * 2 + cell * (rows - 1);
+  const x = (c) => pad + c * cell;
+  const y = (r) => pad + r * cell;
+
+  const lines = [];
+  for (let c = 0; c < cols; c++) lines.push(<line key={'v'+c} x1={x(c)} y1={y(0)} x2={x(c)} y2={y(rows-1)} stroke="#3A2511" strokeWidth="0.8" />);
+  for (let r = 0; r < rows; r++) lines.push(<line key={'h'+r} x1={x(0)} y1={y(r)} x2={x(cols-1)} y2={y(r)} stroke="#3A2511" strokeWidth="0.8" />);
+
+  return (
+    <div style={{
+      borderRadius: 12, overflow: 'hidden',
+      background: 'linear-gradient(135deg, #EBCD93 0%, #DCB875 70%, #B98F4D 100%)',
+      boxShadow: 'inset 0 0 0 1px rgba(58,37,17,0.35)',
+      padding: 6,
+    }}>
+      <svg width="100%" viewBox={`0 0 ${w} ${h}`} style={{ display: 'block' }}>
+        {lines}
+        {/* palace HAN */}
+        <rect x={x(3)} y={y(0)} width={cell*2} height={cell*2} fill="rgba(190,42,42,0.16)" />
+        <line x1={x(3)} y1={y(0)} x2={x(5)} y2={y(2)} stroke="#3A2511" strokeWidth="0.8" />
+        <line x1={x(5)} y1={y(0)} x2={x(3)} y2={y(2)} stroke="#3A2511" strokeWidth="0.8" />
+        {/* palace CHO */}
+        <rect x={x(3)} y={y(7)} width={cell*2} height={cell*2} fill="rgba(11,110,61,0.16)" />
+        <line x1={x(3)} y1={y(7)} x2={x(5)} y2={y(9)} stroke="#3A2511" strokeWidth="0.8" />
+        <line x1={x(5)} y1={y(7)} x2={x(3)} y2={y(9)} stroke="#3A2511" strokeWidth="0.8" />
+        {/* river */}
+        <rect x={x(0)-2} y={y(4)+2} width={x(8)-x(0)+4} height={cell-4} fill="rgba(255,250,235,0.5)" />
+        <text x={(x(2)+x(3))/2} y={y(4)+cell*0.62} fontFamily="'Noto Serif KR', serif" fontWeight="700" fontSize={cell*0.5} fill="#3A2511" textAnchor="middle">楚 河</text>
+        <text x={(x(5)+x(6))/2} y={y(4)+cell*0.62} fontFamily="'Noto Serif KR', serif" fontWeight="700" fontSize={cell*0.5} fill="#3A2511" textAnchor="middle">漢 界</text>
+        {/* labels */}
+        <text x={x(4)} y={y(1)+4} fontSize="9" fill="#7E1717" fontFamily="Pretendard Variable" fontWeight="700" textAnchor="middle">한 궁성</text>
+        <text x={x(4)} y={y(8)+4} fontSize="9" fill="#054D29" fontFamily="Pretendard Variable" fontWeight="700" textAnchor="middle">초 궁성</text>
+      </svg>
+    </div>
+  );
+}
+
+function HelpScreen({ onBack }) {
+  return (
+    <div className="fade-in" style={{
+      padding: '24px 24px 40px',
+      minHeight: '100%',
+    }}>
+      <div style={{
+        position: 'sticky', top: 0, zIndex: 10,
+        margin: '-24px -24px 18px',
+        padding: '18px 24px 14px',
+        background: 'linear-gradient(180deg, var(--bg) 0%, var(--bg) 70%, rgba(250,247,241,0) 100%)',
+        backdropFilter: 'blur(8px)',
+        display: 'flex', alignItems: 'center', gap: 12,
+      }}>
+        <IconBtn onClick={onBack}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </IconBtn>
+        <Eyebrow style={{ color: 'var(--fg2)' }}>도움말 · 장기 규칙</Eyebrow>
+      </div>
+
+      <div style={{
+        fontFamily: "'Noto Serif KR', serif", fontWeight: 700,
+        fontSize: 30, letterSpacing: '-0.02em',
+      }}>장기, 이렇게 두는 게임입니다</div>
+      <p style={{ marginTop: 8, color: 'var(--fg3)', fontSize: 14, lineHeight: 1.65 }}>
+        장기(將棋)는 두 사람이 번갈아 한 수씩 둬서 <b>상대 궁을 잡으면 이기는</b> 한국 전통 보드게임입니다.
+        체스와 비슷하지만 보드 크기, 기물 종류, 이동 규칙이 다릅니다.
+        처음이라면 아래 순서대로 읽어보세요.
+      </p>
+
+      {/* ─── 01 보드 구조 ─── */}
+      <HelpSectionTitle num="01">보드는 어떻게 생겼나요?</HelpSectionTitle>
+      <p style={{ margin: '0 0 12px', color: 'var(--fg2)', fontSize: 13.5, lineHeight: 1.65 }}>
+        가로 <b>9줄</b>, 세로 <b>10줄</b>의 격자판입니다. 기물은 칸 안이 아니라 <b>선이 만나는 점(교차점)</b>에 놓이고, 점에서 점으로 이동합니다.
+      </p>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '6px 0 14px' }}>
+        <BoardDiagram />
+      </div>
+      <HelpCard>
+        <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--fg2)', fontSize: 13.5, lineHeight: 1.85 }}>
+          <li><b>궁성(九宮)</b> — 양 진영 끝의 <b>3×3 영역</b>. 대각선 표시가 있는 곳. 궁과 사는 이 안에서만 움직입니다.</li>
+          <li><b>강(楚河漢界)</b> — 가운데 가로줄. 양 진영을 나누는 상징적인 경계입니다. 기물은 자유롭게 건널 수 있습니다.</li>
+          <li><b>두 진영</b> — <b style={{ color: 'var(--cho)' }}>초(楚, 녹색)</b>는 아래쪽, <b style={{ color: 'var(--han)' }}>한(漢, 빨강)</b>은 위쪽. 본 게임에서는 초가 먼저 둡니다.</li>
+        </ul>
+      </HelpCard>
+
+      {/* ─── 02 기물 구성 ─── */}
+      <HelpSectionTitle num="02">기물 구성 (각 진영 16개)</HelpSectionTitle>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+        {[
+          { t: 'king',     n: '궁', cnt: '×1', desc: '진영의 왕. 잡히면 패배.' },
+          { t: 'guard',    n: '사', cnt: '×2', desc: '궁의 호위. 궁성 안에서만.' },
+          { t: 'chariot',  n: '차', cnt: '×2', desc: '가장 강한 기물. 직선 무제한.' },
+          { t: 'cannon',   n: '포', cnt: '×2', desc: '디딤돌을 넘어야 움직임.' },
+          { t: 'horse',    n: '마', cnt: '×2', desc: 'ㄱ자 진행. 멱에 막힘.' },
+          { t: 'elephant', n: '상', cnt: '×2', desc: '직1+대각2. 경로 모두 비어야.' },
+          { t: 'soldier',  n: '졸·병', cnt: '×5', desc: '전·좌·우 한 칸. 후진 불가.' },
+        ].map(item => (
+          <div key={item.t} style={{
+            padding: '10px', borderRadius: 10,
+            background: 'var(--bg-elev)', border: '1px solid var(--border)',
+            display: 'flex', gap: 10, alignItems: 'center',
+          }}>
+            <JanggiPiece type={item.t} side="CHO" size={34} />
+            <div style={{ minWidth: 0 }}>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
+                <span style={{ fontWeight: 700, fontSize: 13 }}>{item.n}</span>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10.5, color: 'var(--fg3)' }}>{item.cnt}</span>
+              </div>
+              <div style={{ fontSize: 11.5, color: 'var(--fg3)', lineHeight: 1.4, marginTop: 1 }}>{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ─── 03 목표 ─── */}
+      <HelpSectionTitle num="03">이기는 조건</HelpSectionTitle>
+      <HelpCard accent="var(--gold)">
+        <div style={{ fontSize: 13.5, color: 'var(--fg2)', lineHeight: 1.7 }}>
+          <b>상대 궁을 외통수(外通手) 상태로 만들면 승리</b>합니다.
+          <div style={{ marginTop: 8, padding: '10px 12px', borderRadius: 8, background: 'var(--bg-card)' }}>
+            <b style={{ color: 'var(--han)' }}>장군(將軍)</b> — 다음 수에 상대 궁을 잡을 수 있는 상태. 상대는 반드시 회피해야 합니다.<br/>
+            <b style={{ color: 'var(--han)' }}>외통수</b> — 장군을 어떻게도 피할 수 없는 상태. <b>이때 게임 종료</b>, 장군 건 쪽이 승.
+          </div>
+          그 외 <b>기권</b>으로도 종료되며, 어떤 합법 수도 둘 수 없는 <b>스테일메이트</b>는 둘 수 없는 쪽의 패로 처리합니다.
+        </div>
+      </HelpCard>
+
+      {/* ─── 04 한 수의 흐름 ─── */}
+      <HelpSectionTitle num="04">한 수를 두는 흐름</HelpSectionTitle>
+      <HelpCard>
+        <ol style={{ margin: 0, paddingLeft: 20, color: 'var(--fg2)', fontSize: 13.5, lineHeight: 1.85 }}>
+          <li>자기 차례에 <b>자기 기물 하나</b>를 골라, 그 기물의 규칙에 맞게 다른 점으로 옮깁니다.</li>
+          <li>도착 점에 <b>상대 기물</b>이 있으면 잡고(보드에서 제거), 그 자리에 내 기물을 놓습니다.</li>
+          <li>도착 점에 <b>같은 진영 기물</b>이 있는 자리는 갈 수 없습니다.</li>
+          <li><b>자신의 궁이 장군 상태로 남는 수</b>는 둘 수 없습니다 — 합법 수에서 자동 제외됩니다.</li>
+          <li>한 수를 둔 뒤 차례가 상대에게 넘어갑니다.</li>
+        </ol>
+      </HelpCard>
+
+      {/* ─── 05 기물별 이동 ─── */}
+      <HelpSectionTitle num="05">기물별 이동 규칙</HelpSectionTitle>
+      <p style={{ margin: '0 0 10px', color: 'var(--fg3)', fontSize: 13, lineHeight: 1.6 }}>
+        괄호 안 한자는 초/한에서 다르게 쓰입니다. 우측 상단 메뉴에서 <b>한자 ↔ 한글</b> 표기를 바꿀 수 있습니다.
+      </p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {[
+          { t: 'king',     name: '궁 (楚 / 漢)',     v: '∞',  rule: '궁성 안에서 상하좌우 한 칸. 궁성 대각선 점(중앙·네 모서리)에 있으면 대각선으로도 한 칸. 잡히면 패배하므로 절대 노출시키지 마세요.' },
+          { t: 'guard',    name: '사 (士)',          v: '3',  rule: '궁과 동일한 움직임. 궁성 밖으로 나갈 수 없습니다. 사 두 명을 잘 배치해 궁을 보호하는 게 핵심입니다.' },
+          { t: 'chariot',  name: '차 (車)',          v: '13', rule: '가로·세로로 칸 수 제한 없이 진행. 단 다른 기물을 뛰어넘을 수는 없습니다. 궁성에 있을 땐 대각선으로도 진행 가능. 가장 강력한 기물이므로 함부로 내주지 마세요.' },
+          { t: 'cannon',   name: '포 (包 / 砲)',     v: '7',  rule: '직선으로 진행하되, 이동·공격 모두 반드시 <b>한 개의 다른 기물</b>을 “포다리”로 넘어야 합니다. 디딤돌이 없으면 한 칸도 못 갑니다. 포는 다른 <b>포를 넘거나 잡을 수 없습니다</b>.' },
+          { t: 'horse',    name: '마 (馬)',          v: '5',  rule: '먼저 직선으로 한 칸, 이어서 대각선으로 한 칸의 ㄱ자 진행. <b>직선 첫 칸에 어떤 기물이라도 있으면 막혀</b> 갈 수 없습니다(이를 “멱”이라 합니다).' },
+          { t: 'elephant', name: '상 (象)',          v: '3',  rule: '직선 한 칸 + 대각선 두 칸. 마보다 더 큽니다. 경로의 <b>두 중간 점이 모두 비어 있어야</b> 갑니다 — 한 곳이라도 막히면 갈 수 없습니다.' },
+          { t: 'soldier',  name: '졸 · 병 (卒 / 兵)', v: '2',  rule: '전·좌·우 한 칸. <b>뒤로는 절대 갈 수 없습니다.</b> 적 궁성 안 대각선 점에 도달하면 대각선 전진도 가능합니다. 약하지만 합쳐지면 강력한 압박이 됩니다.' },
+        ].map(item => (
+          <div key={item.t} style={{
+            padding: '12px 14px', borderRadius: 12,
+            background: 'var(--bg-elev)', border: '1px solid var(--border)',
+            display: 'flex', gap: 14, alignItems: 'flex-start',
+          }}>
+            <div style={{ flexShrink: 0, marginTop: 2 }}>
+              <JanggiPiece type={item.t} side="CHO" size={48} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <div style={{ fontWeight: 700, fontSize: 14.5 }}>{item.name}</div>
+                <span style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: 10.5, fontWeight: 600,
+                  padding: '2px 6px', borderRadius: 6,
+                  background: 'var(--bg-card)', color: 'var(--fg3)',
+                  border: '1px solid var(--border)',
+                }}>가치 {item.v}</span>
+              </div>
+              <div style={{ marginTop: 5, fontSize: 13, color: 'var(--fg2)', lineHeight: 1.6 }}
+                   dangerouslySetInnerHTML={{ __html: item.rule }} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* ─── 06 특수 규칙 ─── */}
+      <HelpSectionTitle num="06">반드시 알아둘 특수 규칙</HelpSectionTitle>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <HelpCard accent="var(--han)">
+          <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--han)' }}>장군 받기 (피하는 3가지 방법)</div>
+          <ol style={{ margin: '6px 0 0', paddingLeft: 20, fontSize: 13, color: 'var(--fg2)', lineHeight: 1.7 }}>
+            <li><b>궁 이동</b> — 안전한 점으로 옮긴다.</li>
+            <li><b>막기</b> — 위협 기물과 궁 사이에 내 기물을 끼워 넣는다 (차·포·졸 등으로).</li>
+            <li><b>잡기</b> — 장군을 거는 기물을 잡는다.</li>
+          </ol>
+          <div style={{ marginTop: 6, fontSize: 12.5, color: 'var(--fg3)' }}>
+            세 가지 모두 불가능하면 <b>외통수</b> — 패배입니다.
+          </div>
+        </HelpCard>
+        <HelpCard accent="var(--gold)">
+          <div style={{ fontWeight: 700, fontSize: 14 }}>빅장 (맞장)</div>
+          <div style={{ marginTop: 4, fontSize: 13, color: 'var(--fg2)', lineHeight: 1.65 }}>
+            두 궁이 <b>같은 세로줄에서 사이에 어떤 기물도 없이 서로 마주보는 상태</b>는 만들 수 없습니다.
+            이 상태를 유발하는 수는 합법 수에서 자동으로 제외됩니다.
+          </div>
+        </HelpCard>
+        <HelpCard accent="var(--gold)">
+          <div style={{ fontWeight: 700, fontSize: 14 }}>멱(蹩) — 마와 상의 길목 규칙</div>
+          <div style={{ marginTop: 4, fontSize: 13, color: 'var(--fg2)', lineHeight: 1.65 }}>
+            마는 <b>첫 직선 칸</b>이, 상은 <b>중간 두 점</b>이 막히면 갈 수 없습니다.
+            <b>아군이든 적군이든</b> 가리지 않고, 한 칸만 있어도 길이 닫힙니다 — 마·상을 쓸 땐 항상 “길이 열려 있나?”를 봐야 합니다.
+          </div>
+        </HelpCard>
+      </div>
+
+      {/* ─── 07 앱 사용법 ─── */}
+      <HelpSectionTitle num="07">이 앱에서 두는 법</HelpSectionTitle>
+      <HelpCard accent="var(--cho)">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <StepBadge>1</StepBadge>
+            <div style={{ fontSize: 13.5, color: 'var(--fg2)', lineHeight: 1.6 }}>
+              내 차례에 <b>움직일 기물을 탭</b>합니다. 선택된 기물에 초록 8각 테두리가 생깁니다.
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <StepBadge>2</StepBadge>
+            <div style={{ fontSize: 13.5, color: 'var(--fg2)', lineHeight: 1.6 }}>
+              갈 수 있는 점에 <b>회색 점(•)</b>, 잡을 수 있는 적 기물에는 <b style={{ color: 'var(--han)' }}>빨간 링</b>이 표시됩니다.
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <StepBadge>3</StepBadge>
+            <div style={{ fontSize: 13.5, color: 'var(--fg2)', lineHeight: 1.6 }}>
+              <b>도착 점을 탭</b>하면 이동합니다. 다른 내 기물을 탭하면 선택이 바뀌고, 빈 곳을 탭하면 선택이 해제됩니다.
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+            <StepBadge>4</StepBadge>
+            <div style={{ fontSize: 13.5, color: 'var(--fg2)', lineHeight: 1.6 }}>
+              AI는 <b>“생각중…”</b> 표시 후 응수합니다. 우측 상단 <b>⋮</b>로 무르기·표기 전환·기권을 할 수 있습니다.
+            </div>
+          </div>
+        </div>
+      </HelpCard>
+
+      {/* ─── 08 기초 팁 ─── */}
+      <HelpSectionTitle num="08">초보자를 위한 기초 팁</HelpSectionTitle>
+      <HelpCard>
+        <ul style={{ margin: 0, paddingLeft: 18, color: 'var(--fg2)', fontSize: 13.5, lineHeight: 1.85 }}>
+          <li><b>차를 가볍게 잃지 마세요.</b> 가치 13 — 차 한 개가 마·상·사를 합친 것과 맞먹습니다.</li>
+          <li><b>포는 디딤돌이 핵심.</b> 포 앞에 내 기물을 두면 포가 활성화되고, 디딤돌이 사라지면 포는 죽은 기물이 됩니다.</li>
+          <li><b>마·상의 길(멱)을 막지 마세요.</b> 좋은 위치에 두고도 내 기물이 길을 막으면 무용지물입니다.</li>
+          <li><b>중앙 4–5열을 잡으세요.</b> 양쪽을 모두 노릴 수 있어 압박이 커집니다.</li>
+          <li><b>궁성 방어가 곧 승리.</b> 사 두 명과 궁의 배치만 잘 잡아도 외통수 위기를 크게 줄입니다.</li>
+          <li><b>한 수마다 “장군 가능?”을 점검</b>하세요. 무리한 진격보다 안전한 진형이 길게 유리합니다.</li>
+        </ul>
+      </HelpCard>
+
+      <div style={{ marginTop: 32 }}>
+        <PrimaryCTA onClick={onBack} style={{ height: 52 }}>알겠습니다 · 돌아가기</PrimaryCTA>
+      </div>
+    </div>
+  );
+}
+
+const StepBadge = ({ children }) => (
+  <div style={{
+    width: 22, height: 22, borderRadius: '50%',
+    background: 'var(--cho)', color: '#fff',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontFamily: 'JetBrains Mono, monospace',
+    fontSize: 11, fontWeight: 700,
+    flexShrink: 0, marginTop: 1,
+  }}>{children}</div>
+);
+
+const ScreenSpec = ({ label, desc }) => (
+  <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+    <div style={{
+      minWidth: 86, padding: '2px 8px',
+      fontFamily: 'JetBrains Mono, monospace',
+      fontSize: 10.5, fontWeight: 600,
+      color: 'var(--gold-d)',
+      letterSpacing: '0.06em',
+      textAlign: 'center',
+      background: 'var(--bg-card)',
+      borderRadius: 6,
+      flexShrink: 0,
+    }}>{label}</div>
+    <div style={{ fontSize: 13, color: 'var(--fg2)', lineHeight: 1.55 }}>{desc}</div>
+  </div>
+);
+
+// ─── ROOT APP ─────────────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = useState('home'); // home | setup | game | result | help
+  const [config, setConfig] = useState(null);
+  const [result, setResult] = useState(null);
+
+  const goHome = () => { setScreen('home'); setResult(null); };
+
+  return (
+    <>
+      {screen === 'home' && (
+        <HomeScreen
+          onStart={() => setScreen('setup')}
+          onHelp={() => setScreen('help')}
+        />
+      )}
+      {screen === 'setup' && (
+        <SetupScreen
+          onBack={() => setScreen('home')}
+          onStart={(cfg) => { setConfig(cfg); setScreen('game'); }}
+        />
+      )}
+      {screen === 'game' && config && (
+        <GameScreen
+          key={JSON.stringify(config) + (result ? 'r' : '')}
+          config={config}
+          onExit={goHome}
+          onResult={(r) => { setResult(r); setScreen('result'); }}
+        />
+      )}
+      {screen === 'result' && result && config && (
+        <ResultScreen
+          result={result} config={config}
+          onReplay={() => { setResult(null); setScreen('game'); }}
+          onHome={goHome}
+        />
+      )}
+      {screen === 'help' && (
+        <HelpScreen onBack={() => setScreen(config ? 'game' : 'home')} />
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>

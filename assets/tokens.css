@@ -1,0 +1,125 @@
+/* ==========================================================================
+   AXZ Corp — Design Tokens
+   "Back to the Origin, Reinvented with AI"
+   ========================================================================== */
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Brand core ──────────────────────────────────────────────────────── */
+  --axz-void:        #05060B;   /* deepest cosmos */
+  --axz-space:       #0B0E1A;   /* primary dark bg */
+  --axz-nebula:      #141829;   /* elevated surface */
+  --axz-orbit:       #1E2238;   /* card surface */
+  --axz-dust:        #2A2F4A;   /* border, divider */
+
+  --axz-star:        #FFFFFF;   /* brightest */
+  --axz-moon:        #E4E6F0;   /* primary text on dark */
+  --axz-comet:       #9AA0BF;   /* secondary text */
+  --axz-gravity:     #5A608A;   /* tertiary text, icons */
+
+  /* ── Signature gradient (planet/spaceship glow) ──────────────────────── */
+  --axz-violet:      #6B5BFF;   /* primary accent */
+  --axz-indigo:      #3E4AF2;
+  --axz-azure:       #2D7CFF;
+  --axz-cyan:        #5BD4FF;
+  --axz-magenta:     #B14EFF;
+
+  --axz-gradient-planet:
+    radial-gradient(120% 120% at 20% 10%, #B14EFF 0%, #6B5BFF 28%, #2D7CFF 62%, #0B0E1A 100%);
+  --axz-gradient-aurora:
+    linear-gradient(135deg, #6B5BFF 0%, #2D7CFF 50%, #5BD4FF 100%);
+  --axz-gradient-horizon:
+    linear-gradient(180deg, rgba(107,91,255,0) 0%, rgba(107,91,255,0.35) 100%);
+
+  /* ── Semantic ────────────────────────────────────────────────────────── */
+  --axz-success:     #3DDC97;
+  --axz-warning:     #FFB547;
+  --axz-danger:      #FF5A7A;
+  --axz-info:        #5BD4FF;
+
+  /* ── Light mode surfaces ─────────────────────────────────────────────── */
+  --axz-paper:       #FAFAFC;
+  --axz-ink:         #0B0E1A;
+  --axz-graphite:    #3A3F55;
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+  --axz-font-sans:   'Pretendard Variable', Pretendard, 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --axz-font-display:'Inter', 'Pretendard Variable', sans-serif;
+  --axz-font-mono:   'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Type scale — 1.25 (major third) */
+  --axz-text-2xs:   11px;
+  --axz-text-xs:    12px;
+  --axz-text-sm:    13px;
+  --axz-text-base:  15px;
+  --axz-text-md:    17px;
+  --axz-text-lg:    20px;
+  --axz-text-xl:    24px;
+  --axz-text-2xl:   32px;
+  --axz-text-3xl:   44px;
+  --axz-text-4xl:   60px;
+  --axz-text-5xl:   84px;
+  --axz-text-6xl:   120px;
+
+  --axz-leading-tight: 1.08;
+  --axz-leading-snug:  1.25;
+  --axz-leading-body:  1.55;
+  --axz-leading-loose: 1.75;
+
+  --axz-tracking-tighter: -0.04em;
+  --axz-tracking-tight:   -0.02em;
+  --axz-tracking-normal:  0em;
+  --axz-tracking-wide:    0.04em;
+  --axz-tracking-widest:  0.16em;
+
+  /* ── Spacing (4px grid) ──────────────────────────────────────────────── */
+  --axz-s-0:  0px;
+  --axz-s-1:  4px;
+  --axz-s-2:  8px;
+  --axz-s-3:  12px;
+  --axz-s-4:  16px;
+  --axz-s-5:  24px;
+  --axz-s-6:  32px;
+  --axz-s-7:  48px;
+  --axz-s-8:  64px;
+  --axz-s-9:  96px;
+  --axz-s-10: 128px;
+
+  /* ── Radii ───────────────────────────────────────────────────────────── */
+  --axz-r-xs:   4px;
+  --axz-r-sm:   8px;
+  --axz-r-md:   12px;
+  --axz-r-lg:   18px;
+  --axz-r-xl:   24px;
+  --axz-r-2xl:  36px;
+  --axz-r-full: 9999px;
+
+  /* ── Elevation — dark-first, glass-ready ─────────────────────────────── */
+  --axz-shadow-sm:  0 1px 2px rgba(0,0,0,0.25), 0 0 0 1px rgba(107,91,255,0.06);
+  --axz-shadow-md:  0 6px 24px rgba(0,0,0,0.35), 0 0 0 1px rgba(107,91,255,0.08);
+  --axz-shadow-lg:  0 16px 56px rgba(0,0,0,0.45), 0 0 0 1px rgba(107,91,255,0.10);
+  --axz-shadow-glow:0 0 0 1px rgba(107,91,255,0.35), 0 0 48px rgba(107,91,255,0.35);
+  --axz-shadow-halo:0 0 80px rgba(45,124,255,0.40);
+
+  /* ── Motion ──────────────────────────────────────────────────────────── */
+  --axz-ease-orbit: cubic-bezier(0.22, 1, 0.36, 1);
+  --axz-ease-warp:  cubic-bezier(0.65, 0, 0.35, 1);
+  --axz-dur-fast:   140ms;
+  --axz-dur-base:   240ms;
+  --axz-dur-slow:   520ms;
+  --axz-dur-warp:   900ms;
+}
+
+/* ── Base reset ─────────────────────────────────────────────────────────── */
+*,*::before,*::after { box-sizing: border-box; }
+html,body { margin: 0; padding: 0; }
+body {
+  font-family: var(--axz-font-sans);
+  font-feature-settings: 'ss01','cv11';
+  -webkit-font-smoothing: antialiased;
+  color: var(--axz-moon);
+  background: var(--axz-space);
+}

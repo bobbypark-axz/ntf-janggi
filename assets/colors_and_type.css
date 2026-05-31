@@ -1,0 +1,173 @@
+/* ==========================================================================
+   AXZ Design System — Colors & Type
+   Semantic aliases on top of tokens.css
+   "Back to the Origin, Reinvented with AI"
+   ========================================================================== */
+
+@import url('./tokens.css');
+
+:root {
+  /* ── Foreground / Background Aliases (dark-first) ─────────────────────── */
+  --bg:        var(--axz-space);   /* #0B0E1A */
+  --bg-deep:   var(--axz-void);    /* #05060B */
+  --bg-elev:   var(--axz-nebula);  /* #141829 — elevated surface */
+  --bg-card:   var(--axz-orbit);   /* #1E2238 — card surface */
+  --border:    var(--axz-dust);    /* #2A2F4A */
+
+  --fg1:       var(--axz-star);    /* headline / brightest */
+  --fg2:       var(--axz-moon);    /* primary body on dark */
+  --fg3:       var(--axz-comet);   /* secondary body */
+  --fg4:       var(--axz-gravity); /* tertiary / icons / captions */
+
+  --accent:    var(--axz-violet);  /* primary accent */
+  --accent-2:  var(--axz-azure);
+  --accent-3:  var(--axz-cyan);
+
+  /* Aurora gradient: CTA + emphasized text ONLY. Never decorative. */
+  --gradient-accent: var(--axz-gradient-aurora);
+  --gradient-hero:   var(--axz-gradient-planet);
+  --gradient-fade:   var(--axz-gradient-horizon);
+
+  /* Ambient radial wash applied to full-page backgrounds */
+  --bg-ambient:
+    radial-gradient(1200px 800px at 85% -10%, rgba(107,91,255,0.22), transparent 60%),
+    radial-gradient(900px 600px at 10% 110%, rgba(45,124,255,0.16), transparent 60%),
+    var(--axz-space);
+
+  /* ── Semantic type (map to tokens) ────────────────────────────────────── */
+  --serif-display: var(--axz-font-display); /* Inter */
+  --sans:          var(--axz-font-sans);    /* Pretendard Variable */
+  --mono:          var(--axz-font-mono);    /* JetBrains Mono */
+
+  /* Roles */
+  --leading-tight: var(--axz-leading-tight);
+  --leading-snug:  var(--axz-leading-snug);
+  --leading-body:  var(--axz-leading-body);
+
+  --track-tighter: var(--axz-tracking-tighter);
+  --track-tight:   var(--axz-tracking-tight);
+  --track-wide:    var(--axz-tracking-wide);
+  --track-widest:  var(--axz-tracking-widest); /* 0.16em — mono eyebrows */
+}
+
+/* ── Semantic element styles ─────────────────────────────────────────────── */
+body {
+  font-family: var(--sans);
+  font-feature-settings: 'ss01','cv11';
+  color: var(--fg2);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display — English / numerals (Inter 300–500) */
+.display-1, h1.display {
+  font-family: var(--serif-display);
+  font-weight: 500;
+  font-size: var(--axz-text-6xl);   /* 120 */
+  line-height: 1.0;
+  letter-spacing: -0.04em;
+  color: var(--fg1);
+  margin: 0;
+}
+.display-2 {
+  font-family: var(--serif-display);
+  font-weight: 500;
+  font-size: var(--axz-text-5xl);   /* 84 */
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--fg1);
+}
+
+/* Headings — default to Inter; .kor variant switches to Pretendard */
+h1 {
+  font-family: var(--serif-display);
+  font-size: var(--axz-text-4xl);   /* 60 */
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--fg1);
+  margin: 0;
+}
+h1.kor, .display-1.kor, .display-2.kor {
+  font-family: var(--sans);
+  font-weight: 300;
+}
+h2 {
+  font-family: var(--serif-display);
+  font-size: var(--axz-text-3xl);   /* 44 */
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--fg1);
+  margin: 0;
+}
+h3 {
+  font-family: var(--sans);
+  font-size: var(--axz-text-xl);    /* 24 */
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--fg1);
+  margin: 0;
+}
+h4 {
+  font-family: var(--sans);
+  font-size: var(--axz-text-md);    /* 17 */
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--fg1);
+  margin: 0;
+}
+
+p, .body {
+  font-family: var(--sans);
+  font-size: var(--axz-text-base);  /* 15 */
+  line-height: 1.55;
+  color: var(--fg3);
+  margin: 0;
+}
+.body-lg {
+  font-size: var(--axz-text-md);    /* 17 */
+  line-height: 1.55;
+  color: var(--fg3);
+}
+.body-sm {
+  font-size: var(--axz-text-sm);    /* 13 */
+  line-height: 1.6;
+  color: var(--fg3);
+}
+
+/* Emphasis: aurora clip. Never a solid colour. */
+.em-aurora, h1 em, h2 em, .display-1 em, .display-2 em {
+  font-style: normal;
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Eyebrow / token label — Mono 11, uppercase, wide tracking */
+.eyebrow, .label-mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--track-widest);
+  text-transform: uppercase;
+  color: var(--fg3);
+}
+
+/* Inline code / token */
+code, .code {
+  font-family: var(--mono);
+  font-size: var(--axz-text-xs);
+  letter-spacing: var(--track-wide);
+  color: var(--accent-3);
+}
+
+/* Caption */
+.caption {
+  font-family: var(--sans);
+  font-size: var(--axz-text-xs);
+  color: var(--fg4);
+  line-height: 1.5;
+}

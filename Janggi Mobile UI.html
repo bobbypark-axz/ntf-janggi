@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Web Janggi · Mobile UI</title>
+
+<link rel="stylesheet" href="assets/tokens.css" />
+<link rel="stylesheet" href="assets/colors_and_type.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+
+<style>
+  html, body {
+    background: #1A1B22; /* canvas around device frames */
+    color: var(--fg2);
+    font-family: var(--sans);
+  }
+
+  /* Animations for board/check */
+  @keyframes janggiPulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50%      { opacity: 1;    transform: scale(1.08); }
+  }
+  @keyframes auroraShift {
+    0%,100% { background-position: 0% 50%; }
+    50%     { background-position: 100% 50%; }
+  }
+
+  /* Design canvas section title styling override (matches dark theme) */
+</style>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="janggi-board.jsx"></script>
+<script type="text/babel" src="janggi-screens.jsx"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+  const { useState } = React;
+
+  function App() {
+    return (
+      <DesignCanvas>
+        <DCSection
+          id="flow"
+          title="Web Janggi · Mobile"
+          subtitle="전통 장기 · 우드 보드 · 모바일 플로우">
+
+          <DCArtboard id="home" label="01 · 홈 (Home)" width={402} height={874}>
+            <IOSDevice dark>
+              <HomeScreen />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="setup" label="02 · 새 대국 설정" width={402} height={874}>
+            <IOSDevice dark>
+              <NewGameScreen />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="board-idle" label="03 · 대국 — 대기" width={402} height={874}>
+            <IOSDevice dark>
+              <GameScreen variant="idle" />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="board-selected" label="04 · 대국 — 기물 선택" width={402} height={874}>
+            <IOSDevice dark>
+              <GameScreen variant="selected" />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="board-check" label="05 · 대국 — 장군!" width={402} height={874}>
+            <IOSDevice dark>
+              <GameScreen variant="check" />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="menu" label="06 · 대국 메뉴 (시트)" width={402} height={874}>
+            <IOSDevice dark>
+              <MenuSheetScreen />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="result-win" label="07 · 결과 — 승리" width={402} height={874}>
+            <IOSDevice dark>
+              <ResultScreen won={true} />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="result-lose" label="08 · 결과 — 패배" width={402} height={874}>
+            <IOSDevice dark>
+              <ResultScreen won={false} />
+            </IOSDevice>
+          </DCArtboard>
+
+          <DCArtboard id="help" label="09 · 도움말 / 규칙" width={402} height={874}>
+            <IOSDevice dark>
+              <HelpScreen />
+            </IOSDevice>
+          </DCArtboard>
+
+        </DCSection>
+      </DesignCanvas>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<style id="__om-edit-overrides"></style>
+</body>
+</html>
