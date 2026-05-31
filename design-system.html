@@ -39,15 +39,31 @@
 
   .page {
     width: 210mm;
-    min-height: 297mm;
+    height: 297mm;
     margin: 16px auto;
-    padding: 22mm 18mm;
+    padding: 18mm 16mm 22mm;
     background: #FFFFFF;
     box-shadow: 0 8px 32px rgba(60,40,15,0.12);
     page-break-after: always;
+    page-break-inside: avoid;
     position: relative;
+    overflow: hidden;
   }
   .page:last-child { page-break-after: auto; }
+
+  @media print {
+    body { background: #FFFFFF; }
+    .page {
+      margin: 0 !important;
+      box-shadow: none !important;
+      page-break-after: always;
+    }
+  }
+
+  .swatch, .card, .comp-block, .piece-cell, .type-sample {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
 
   .pf {
     position: absolute;
@@ -73,16 +89,16 @@
   h2 {
     font-family: 'Noto Serif KR', serif;
     font-weight: 700;
-    font-size: 28pt;
-    margin: 0 0 6pt;
+    font-size: 22pt;
+    margin: 0 0 4pt;
     letter-spacing: -0.02em;
     line-height: 1.1;
   }
   h3 {
     font-family: 'Pretendard Variable', sans-serif;
     font-weight: 700;
-    font-size: 14pt;
-    margin: 18pt 0 8pt;
+    font-size: 12pt;
+    margin: 12pt 0 6pt;
     letter-spacing: -0.01em;
     color: var(--fg1);
   }
@@ -145,10 +161,10 @@
     background: #fff;
   }
   .swatch .chip {
-    height: 60pt;
+    height: 42pt;
   }
   .swatch .info {
-    padding: 7pt 9pt;
+    padding: 5pt 8pt;
   }
   .swatch .name {
     font-weight: 700;
@@ -311,21 +327,21 @@
 
   /* ─── Screen frame (faux iPhone) ─── */
   .phone-frame {
-    width: 200pt; height: 432pt;
-    border-radius: 32pt;
-    border: 5pt solid #1A1612;
+    width: 145pt; height: 296pt;
+    border-radius: 22pt;
+    border: 3pt solid #1A1612;
     background: var(--bg);
     overflow: hidden;
     position: relative;
-    box-shadow: 0 16px 32px rgba(60,40,15,0.18);
+    box-shadow: 0 10px 22px rgba(60,40,15,0.18);
   }
   .phone-screen {
     width: 100%; height: 100%;
-    padding: 16pt;
+    padding: 10pt;
     overflow: hidden;
     position: relative;
     background:
-      radial-gradient(160pt 100pt at 50% -10pt, rgba(180,134,58,0.10), transparent 60%),
+      radial-gradient(120pt 80pt at 50% -10pt, rgba(180,134,58,0.10), transparent 60%),
       var(--bg);
   }
   .screen-caption {
@@ -720,50 +736,50 @@
 
   <h3 style="margin-top: 18pt;">한자 표기 (기본)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa1"></svg><div class="name" style="color: var(--cho);">楚 / 漢</div><div class="desc">궁 · 가치 ∞</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa2"></svg><div class="name" style="color: var(--cho);">士</div><div class="desc">사 · 가치 3</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa3"></svg><div class="name" style="color: var(--cho);">車</div><div class="desc">차 · 가치 13</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa4"></svg><div class="name" style="color: var(--cho);">包 / 砲</div><div class="desc">포 · 가치 7</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa5"></svg><div class="name" style="color: var(--cho);">馬</div><div class="desc">마 · 가치 5</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa6"></svg><div class="name" style="color: var(--cho);">象</div><div class="desc">상 · 가치 3</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pa7"></svg><div class="name" style="color: var(--cho);">卒 / 兵</div><div class="desc">졸/병 · 가치 2</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa1"></svg><div class="name" style="color: var(--cho);">楚 / 漢</div><div class="desc">궁 · 가치 ∞</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa2"></svg><div class="name" style="color: var(--cho);">士</div><div class="desc">사 · 가치 3</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa3"></svg><div class="name" style="color: var(--cho);">車</div><div class="desc">차 · 가치 13</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa4"></svg><div class="name" style="color: var(--cho);">包 / 砲</div><div class="desc">포 · 가치 7</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa5"></svg><div class="name" style="color: var(--cho);">馬</div><div class="desc">마 · 가치 5</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa6"></svg><div class="name" style="color: var(--cho);">象</div><div class="desc">상 · 가치 3</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa7"></svg><div class="name" style="color: var(--cho);">卒 / 兵</div><div class="desc">졸/병 · 가치 2</div></div>
   </div>
 
   <h3>한(漢) 진영 (적색)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb1"></svg><div class="name" style="color: var(--han);">漢</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb2"></svg><div class="name" style="color: var(--han);">士</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb3"></svg><div class="name" style="color: var(--han);">車</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb4"></svg><div class="name" style="color: var(--han);">砲</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb5"></svg><div class="name" style="color: var(--han);">馬</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb6"></svg><div class="name" style="color: var(--han);">象</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pb7"></svg><div class="name" style="color: var(--han);">兵</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb1"></svg><div class="name" style="color: var(--han);">漢</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb2"></svg><div class="name" style="color: var(--han);">士</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb3"></svg><div class="name" style="color: var(--han);">車</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb4"></svg><div class="name" style="color: var(--han);">砲</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb5"></svg><div class="name" style="color: var(--han);">馬</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb6"></svg><div class="name" style="color: var(--han);">象</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb7"></svg><div class="name" style="color: var(--han);">兵</div></div>
   </div>
 
   <h3>한글 표기 (토글)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc1"></svg><div class="name" style="color: var(--cho);">궁</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc2"></svg><div class="name" style="color: var(--cho);">사</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc3"></svg><div class="name" style="color: var(--cho);">차</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc4"></svg><div class="name" style="color: var(--cho);">포</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc5"></svg><div class="name" style="color: var(--cho);">마</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc6"></svg><div class="name" style="color: var(--cho);">상</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="pc7"></svg><div class="name" style="color: var(--cho);">졸</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc1"></svg><div class="name" style="color: var(--cho);">궁</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc2"></svg><div class="name" style="color: var(--cho);">사</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc3"></svg><div class="name" style="color: var(--cho);">차</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc4"></svg><div class="name" style="color: var(--cho);">포</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc5"></svg><div class="name" style="color: var(--cho);">마</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc6"></svg><div class="name" style="color: var(--cho);">상</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc7"></svg><div class="name" style="color: var(--cho);">졸</div></div>
   </div>
 
   <h3>상태 변화</h3>
   <div class="grid grid-4">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="56" height="56" id="ps1"></svg><div class="name">기본</div><div class="desc">평상 상태</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="ps1"></svg><div class="name">기본</div><div class="desc">평상 상태</div></div>
     <div class="piece-cell" style="background: linear-gradient(135deg, rgba(11,110,61,0.15), transparent);">
-      <svg viewBox="0 0 100 100" width="56" height="56" id="ps2"></svg>
+      <svg viewBox="0 0 100 100" width="42" height="42" id="ps2"></svg>
       <div class="name">선택 (glow)</div><div class="desc">초록 8각 후광</div>
     </div>
     <div class="piece-cell" style="background: linear-gradient(135deg, rgba(183,37,37,0.18), transparent);">
-      <svg viewBox="0 0 100 100" width="56" height="56" id="ps3"></svg>
+      <svg viewBox="0 0 100 100" width="42" height="42" id="ps3"></svg>
       <div class="name">위협 (threatened)</div><div class="desc">붉은 점멸 (장군)</div>
     </div>
     <div class="piece-cell" style="opacity: 0.5; filter: saturate(0.35);">
-      <svg viewBox="0 0 100 100" width="56" height="56" id="ps4"></svg>
+      <svg viewBox="0 0 100 100" width="42" height="42" id="ps4"></svg>
       <div class="name">잡힘 (captured)</div><div class="desc">탈색 + 페이드</div>
     </div>
   </div>
@@ -803,8 +819,8 @@
   </div>
 
   <h3>보드 미니어처</h3>
-  <div style="display: flex; justify-content: center; margin-top: 6pt;">
-    <div id="board-mount" style="display: inline-block;"></div>
+  <div style="display: flex; justify-content: center; margin-top: 4pt;">
+    <div id="board-mount" style="display: inline-block; transform: scale(0.85); transform-origin: center top;"></div>
   </div>
 
   <h3>인터랙션 표시</h3>
@@ -850,12 +866,12 @@
 </section>
 
 <!-- ═══════════ PAGE 8 · SCREENS ═══════════ -->
-<section class="page" style="padding-top: 16mm;">
+<section class="page" style="padding-top: 14mm;">
   <div class="eyebrow">07 · SCREENS</div>
   <h2 style="margin-top: 4pt;">화면 일람</h2>
   <p class="lead">현재 라이트 테마의 모바일 (≤480px) 흐름. 홈 → 설정 → 대국 → 결과의 4단계 + 도움말.</p>
 
-  <div style="margin-top: 18pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14pt;">
+  <div style="margin-top: 12pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; justify-items: center;">
     <!-- HOME -->
     <div>
       <div class="phone-frame">
@@ -940,7 +956,7 @@
     </div>
   </div>
 
-  <div style="margin-top: 20pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14pt;">
+  <div style="margin-top: 12pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; justify-items: center;">
     <!-- RESULT WIN -->
     <div>
       <div class="phone-frame">
