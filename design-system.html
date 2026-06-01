@@ -327,31 +327,86 @@
 
   /* ─── Screen frame (faux iPhone) ─── */
   .phone-frame {
-    width: 145pt; height: 296pt;
-    border-radius: 22pt;
+    width: 158pt; height: 332pt;
+    border-radius: 24pt;
     border: 3pt solid #1A1612;
     background: var(--bg);
     overflow: hidden;
     position: relative;
     box-shadow: 0 10px 22px rgba(60,40,15,0.18);
+    flex-shrink: 0;
   }
   .phone-screen {
     width: 100%; height: 100%;
-    padding: 10pt;
+    padding: 11pt;
     overflow: hidden;
     position: relative;
     background:
-      radial-gradient(120pt 80pt at 50% -10pt, rgba(180,134,58,0.10), transparent 60%),
+      radial-gradient(140pt 90pt at 50% -10pt, rgba(180,134,58,0.10), transparent 60%),
       var(--bg);
+    font-size: 7pt;
+    color: var(--fg1);
+  }
+  .ps-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 6.5pt; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--fg3);
+  }
+  .ps-title {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700; font-size: 13pt;
+    letter-spacing: -0.02em; line-height: 1.1;
+  }
+  .ps-body {
+    font-size: 6.5pt; line-height: 1.5; color: var(--fg3); margin: 3pt 0 0;
+  }
+  .ps-cta {
+    height: 24pt; width: 100%; border-radius: 6pt;
+    border: 1px solid #7A5818;
+    background: linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
+    color: #2D1F08;
+    font-weight: 700; font-size: 8.5pt;
+    display: flex; align-items: center; justify-content: center; gap: 4pt;
+    box-shadow: inset 0 1px 0 rgba(255,235,180,0.6), 0 3px 7px rgba(120,80,20,0.18);
+  }
+  .ps-ghost {
+    height: 20pt; width: 100%; border-radius: 5pt;
+    border: 1px solid var(--border);
+    background: var(--bg-elev); color: var(--fg1);
+    font-weight: 500; font-size: 7.5pt;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ps-icon {
+    width: 18pt; height: 18pt; border-radius: 5pt;
+    border: 1px solid var(--border);
+    background: var(--bg-elev); color: var(--fg1);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ps-pill {
+    display: inline-flex; align-items: center; gap: 4pt;
+    padding: 3pt 8pt; border-radius: 9999px;
+    background: var(--bg-elev); border: 1px solid var(--border);
+    font-size: 7pt; font-weight: 600;
+  }
+  .ps-pill .dot { width: 4pt; height: 4pt; border-radius: 50%; }
+  .ps-card {
+    background: var(--bg-elev); border: 1px solid var(--border);
+    border-radius: 7pt; padding: 5pt 7pt;
+  }
+  .ps-bottom {
+    position: absolute; left: 11pt; right: 11pt; bottom: 11pt;
+    display: flex; flex-direction: column; gap: 5pt;
   }
   .screen-caption {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
+    font-size: 7.5pt;
     color: var(--fg3);
     text-align: center;
-    margin-top: 6pt;
+    margin-top: 4pt;
     letter-spacing: 0.08em;
   }
+  .screen-tile { display: flex; flex-direction: column; align-items: center; }
 </style>
 </head>
 <body>
@@ -820,7 +875,7 @@
 
   <h3>보드 미니어처</h3>
   <div style="display: flex; justify-content: center; margin-top: 4pt;">
-    <div id="board-mount" style="display: inline-block; transform: scale(0.85); transform-origin: center top;"></div>
+    <div id="board-mount" style="display: inline-block;"></div>
   </div>
 
   <h3>인터랙션 표시</h3>
@@ -869,167 +924,173 @@
 <section class="page" style="padding-top: 14mm;">
   <div class="eyebrow">07 · SCREENS</div>
   <h2 style="margin-top: 4pt;">화면 일람</h2>
-  <p class="lead">현재 라이트 테마의 모바일 (≤480px) 흐름. 홈 → 설정 → 대국 → 결과의 4단계 + 도움말.</p>
+  <p class="lead">현재 라이트 테마의 모바일(≤480px) 흐름. 홈 → 설정 → 대국 → 결과의 4단계 + 도움말.</p>
 
-  <div style="margin-top: 12pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; justify-items: center;">
-    <!-- HOME -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <div style="padding-top: 28pt;">
-            <div class="eyebrow-chip">새 대국을 시작합니다</div>
-            <div style="margin-top: 8pt; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 32pt; line-height: 1; letter-spacing: -0.03em;">
-              <span style="color: var(--cho);">楚</span><span style="color: var(--fg4); margin: 0 6pt; font-weight: 400;">·</span><span style="color: var(--han);">漢</span>
-            </div>
-            <div style="margin-top: 2pt; font-weight: 300; font-size: 14pt; letter-spacing: -0.02em;">한 수, 다시 두다.</div>
-            <p style="margin-top: 8pt; font-size: 8pt; color: var(--fg3); line-height: 1.5;">설치 없이, 광고 없이. 가벼운 한 판의 장기.</p>
-            <div id="home-mini" style="margin-top: 18pt; display: flex; justify-content: center;"></div>
+  <div style="margin-top: 12pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8pt; justify-items: center;">
+
+    <!-- 01 HOME -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen">
+        <div style="padding-top: 30pt;">
+          <div class="ps-eyebrow">새 대국을 시작합니다</div>
+          <div style="margin-top: 5pt; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 26pt; line-height: 1; letter-spacing: -0.03em;">
+            <span style="color: var(--cho);">楚</span><span style="color: var(--fg4); margin: 0 4pt; font-weight: 400;">·</span><span style="color: var(--han);">漢</span>
           </div>
-          <div style="position: absolute; bottom: 16pt; left: 16pt; right: 16pt;">
-            <button class="btn-primary" style="width: 100%; height: 32pt; font-size: 11pt;">새 대국 시작 →</button>
-            <div style="height: 6pt;"></div>
-            <button class="btn-ghost" style="width: 100%; height: 28pt; font-size: 10pt;">도움말</button>
-          </div>
+          <div style="margin-top: 2pt; font-weight: 300; font-size: 11pt; letter-spacing: -0.02em;">한 수, 다시 두다.</div>
+          <p class="ps-body">설치 없이, 광고 없이.<br/>가벼운 한 판의 장기.</p>
+          <div id="home-mini" style="margin-top: 12pt; display: flex; justify-content: center;"></div>
         </div>
-      </div>
+        <div class="ps-bottom">
+          <div class="ps-cta">새 대국 시작 →</div>
+          <div class="ps-ghost">도움말</div>
+        </div>
+      </div></div>
       <div class="screen-caption">01 · 홈</div>
     </div>
 
-    <!-- SETUP -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <button class="btn-icon" style="margin-bottom: 14pt;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          </button>
-          <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 18pt; letter-spacing: -0.02em;">대국 설정</div>
-          <p style="margin-top: 2pt; font-size: 9pt; color: var(--fg3);">AI 난이도와 진영을 선택하세요.</p>
-          <div class="eyebrow-chip" style="margin-top: 14pt;">AI 난이도</div>
-          <div style="margin-top: 6pt; display: flex; flex-direction: column; gap: 4pt;">
-            <div style="border: 1px solid var(--border); border-radius: 8pt; padding: 6pt 10pt; font-size: 9pt; font-weight: 600;">쉬움</div>
-            <div style="border: 1px solid var(--gold-d); background: var(--bg-card); border-radius: 8pt; padding: 6pt 10pt; font-size: 9pt; font-weight: 700;">보통 ●</div>
-            <div style="border: 1px solid var(--border); border-radius: 8pt; padding: 6pt 10pt; font-size: 9pt; font-weight: 600;">어려움</div>
+    <!-- 02 SETUP -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen">
+        <div class="ps-icon">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </div>
+        <div class="ps-title" style="margin-top: 10pt;">대국 설정</div>
+        <p class="ps-body">AI 난이도와 진영을 선택하세요.</p>
+        <div class="ps-eyebrow" style="margin-top: 9pt;">AI 난이도</div>
+        <div style="margin-top: 4pt; display: flex; flex-direction: column; gap: 3pt;">
+          <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 5pt; padding: 4pt 7pt; font-size: 7pt; font-weight: 600;">쉬움</div>
+          <div style="border: 1px solid var(--gold-d); background: var(--bg-card); border-radius: 5pt; padding: 4pt 7pt; font-size: 7pt; font-weight: 700; display: flex; justify-content: space-between; align-items: center;">
+            <span>보통</span>
+            <span style="width: 7pt; height: 7pt; border-radius: 50%; border: 1.5px solid var(--gold); display: inline-block; position: relative;"><span style="position: absolute; inset: 1pt; border-radius: 50%; background: var(--gold);"></span></span>
           </div>
-          <div class="eyebrow-chip" style="margin-top: 14pt;">내 진영</div>
-          <div style="margin-top: 6pt; display: grid; grid-template-columns: 1fr 1fr; gap: 5pt;">
-            <div style="border: 1.5px solid var(--cho); background: var(--cho-bg); border-radius: 10pt; padding: 10pt; text-align: center; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 22pt; color: var(--cho);">楚</div>
-            <div style="border: 1px solid var(--border); border-radius: 10pt; padding: 10pt; text-align: center; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 22pt; color: var(--han);">漢</div>
+          <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 5pt; padding: 4pt 7pt; font-size: 7pt; font-weight: 600;">어려움</div>
+        </div>
+        <div class="ps-eyebrow" style="margin-top: 8pt;">내 진영</div>
+        <div style="margin-top: 4pt; display: grid; grid-template-columns: 1fr 1fr; gap: 4pt;">
+          <div style="border: 1.2px solid var(--cho); background: var(--cho-bg); border-radius: 6pt; padding: 7pt 4pt; text-align: center;">
+            <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 16pt; color: var(--cho); line-height: 1;">楚</div>
+            <div style="margin-top: 2pt; font-size: 6.5pt; font-weight: 600;">초 · 선수</div>
           </div>
-          <div style="position: absolute; bottom: 16pt; left: 16pt; right: 16pt;">
-            <button class="btn-primary" style="width: 100%; height: 32pt; font-size: 11pt;">대국 시작 →</button>
+          <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 6pt; padding: 7pt 4pt; text-align: center;">
+            <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 16pt; color: var(--han); line-height: 1;">漢</div>
+            <div style="margin-top: 2pt; font-size: 6.5pt; font-weight: 600;">한 · 후수</div>
           </div>
         </div>
-      </div>
+        <div class="ps-bottom">
+          <div class="ps-cta">대국 시작 →</div>
+        </div>
+      </div></div>
       <div class="screen-caption">02 · 새 대국 설정</div>
     </div>
 
-    <!-- GAME -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <button class="btn-icon" style="width: 22pt; height: 22pt;">
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            </button>
-            <div style="display: inline-flex; align-items: center; gap: 4pt; padding: 3pt 8pt; border-radius: 9999px; background: var(--bg-elev); border: 1px solid var(--border);">
-              <div style="width: 5pt; height: 5pt; border-radius: 50%; background: var(--cho);"></div>
-              <span style="font-size: 8pt; font-weight: 700;">내 차례</span>
-            </div>
-            <button class="btn-icon" style="width: 22pt; height: 22pt;">⋮</button>
+    <!-- 03 GAME -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="ps-icon">←</div>
+          <div class="ps-pill"><span class="dot" style="background: var(--cho);"></span><span>내 차례</span></div>
+          <div class="ps-icon">⋮</div>
+        </div>
+        <div class="ps-eyebrow" style="margin-top: 6pt;">한 잃은</div>
+        <div style="margin-top: 2pt; font-size: 6pt; color: var(--fg4); font-family: 'JetBrains Mono', monospace;">—</div>
+        <div id="game-mini" style="margin-top: 4pt; display: flex; justify-content: center;"></div>
+        <div class="ps-eyebrow" style="margin-top: 4pt;">초 잃은</div>
+        <div style="margin-top: 2pt; font-size: 6pt; color: var(--fg4); font-family: 'JetBrains Mono', monospace;">—</div>
+        <div style="position: absolute; bottom: 11pt; left: 11pt; right: 11pt; display: flex; gap: 4pt;">
+          <div class="ps-card" style="flex: 1;">
+            <div class="ps-eyebrow" style="font-size: 5.5pt;">최근 수</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; margin-top: 2pt;">초 차2→3</div>
           </div>
-          <div class="eyebrow-chip" style="margin-top: 8pt; font-size: 7pt;">한 잃은</div>
-          <div id="game-mini" style="margin-top: 6pt; display: flex; justify-content: center;"></div>
-          <div class="eyebrow-chip" style="margin-top: 6pt; font-size: 7pt;">초 잃은</div>
-          <div style="position: absolute; bottom: 14pt; left: 14pt; right: 14pt; display: flex; gap: 4pt;">
-            <div class="card" style="flex: 1; padding: 5pt 8pt; font-size: 8pt;">
-              <div class="eyebrow-chip" style="font-size: 7pt;">최근 수</div>
-              <div style="font-family: 'JetBrains Mono', monospace; font-size: 8.5pt; margin-top: 2pt;">초 차2→3</div>
-            </div>
-            <div class="card" style="padding: 5pt 8pt; min-width: 38pt; text-align: right;">
-              <div class="eyebrow-chip" style="font-size: 7pt;">수</div>
-              <div style="font-family: 'JetBrains Mono', monospace; font-size: 11pt; font-weight: 700; margin-top: 2pt;">12</div>
-            </div>
+          <div class="ps-card" style="min-width: 30pt; text-align: right;">
+            <div class="ps-eyebrow" style="font-size: 5.5pt;">수</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10pt; font-weight: 700; margin-top: 2pt;">12</div>
           </div>
         </div>
-      </div>
+      </div></div>
       <div class="screen-caption">03 · 대국</div>
     </div>
-  </div>
 
-  <div style="margin-top: 12pt; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10pt; justify-items: center;">
-    <!-- RESULT WIN -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen" style="display: flex; flex-direction: column;">
-          <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div class="eyebrow-chip" style="color: var(--gold-d);">승리</div>
-            <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 64pt; line-height: 1; color: var(--gold-d); text-shadow: 0 4pt 22pt rgba(180,134,58,0.35); margin-top: 8pt;">勝</div>
-            <div style="margin-top: 8pt; font-size: 14pt; font-weight: 700;">잘 두셨습니다.</div>
-            <div style="margin-top: 2pt; color: var(--fg3); font-size: 9pt;">외통수 · 초 승</div>
-            <div class="card" style="margin-top: 18pt; padding: 10pt 12pt; width: 100%; display: flex; justify-content: space-between;">
-              <div>
-                <div class="eyebrow-chip" style="font-size: 7pt;">총 수</div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 16pt; font-weight: 700;">24</div>
-              </div>
-              <div style="text-align: right;">
-                <div class="eyebrow-chip" style="font-size: 7pt;">소요</div>
-                <div style="font-family: 'JetBrains Mono', monospace; font-size: 16pt; font-weight: 700;">5분 42초</div>
-              </div>
+    <!-- 04 RESULT WIN -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen" style="display: flex; flex-direction: column;">
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+          <div class="ps-eyebrow" style="color: var(--gold-d);">승리</div>
+          <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 50pt; line-height: 1; color: var(--gold-d); text-shadow: 0 3pt 18pt rgba(180,134,58,0.35); margin-top: 6pt;">勝</div>
+          <div style="margin-top: 6pt; font-size: 10pt; font-weight: 700;">잘 두셨습니다.</div>
+          <div style="margin-top: 2pt; color: var(--fg3); font-size: 6.5pt;">외통수 · 초 승</div>
+          <div class="ps-card" style="margin-top: 12pt; width: 100%; display: flex; justify-content: space-between;">
+            <div>
+              <div class="ps-eyebrow" style="font-size: 5.5pt;">총 수</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12pt; font-weight: 700;">24</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="ps-eyebrow" style="font-size: 5.5pt;">소요</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12pt; font-weight: 700;">05:42</div>
             </div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 5pt;">
-            <button class="btn-primary" style="width: 100%; height: 32pt; font-size: 11pt;">다시 하기</button>
-            <button class="btn-ghost" style="width: 100%; height: 28pt; font-size: 10pt;">메인으로</button>
-          </div>
         </div>
-      </div>
+        <div style="display: flex; flex-direction: column; gap: 4pt;">
+          <div class="ps-cta">다시 하기</div>
+          <div class="ps-ghost">메인으로</div>
+        </div>
+      </div></div>
       <div class="screen-caption">04 · 결과 (승리)</div>
     </div>
 
-    <!-- RESULT LOSE -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen" style="display: flex; flex-direction: column;">
-          <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div class="eyebrow-chip">패배</div>
-            <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 64pt; line-height: 1; color: var(--fg2); margin-top: 8pt;">敗</div>
-            <div style="margin-top: 8pt; font-size: 14pt; font-weight: 700;">아쉽습니다.</div>
-            <div style="margin-top: 2pt; color: var(--fg3); font-size: 9pt;">외통수 · 한 승</div>
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 5pt;">
-            <button class="btn-primary" style="width: 100%; height: 32pt; font-size: 11pt;">다시 하기</button>
-            <button class="btn-ghost" style="width: 100%; height: 28pt; font-size: 10pt;">메인으로</button>
+    <!-- 05 RESULT LOSE -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen" style="display: flex; flex-direction: column;">
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+          <div class="ps-eyebrow">패배</div>
+          <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 50pt; line-height: 1; color: var(--fg2); margin-top: 6pt;">敗</div>
+          <div style="margin-top: 6pt; font-size: 10pt; font-weight: 700;">아쉽습니다.</div>
+          <div style="margin-top: 2pt; color: var(--fg3); font-size: 6.5pt;">외통수 · 한 승</div>
+          <div class="ps-card" style="margin-top: 12pt; width: 100%; display: flex; justify-content: space-between;">
+            <div>
+              <div class="ps-eyebrow" style="font-size: 5.5pt;">총 수</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12pt; font-weight: 700;">18</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="ps-eyebrow" style="font-size: 5.5pt;">소요</div>
+              <div style="font-family: 'JetBrains Mono', monospace; font-size: 12pt; font-weight: 700;">04:18</div>
+            </div>
           </div>
         </div>
-      </div>
+        <div style="display: flex; flex-direction: column; gap: 4pt;">
+          <div class="ps-cta">다시 하기</div>
+          <div class="ps-ghost">메인으로</div>
+        </div>
+      </div></div>
       <div class="screen-caption">05 · 결과 (패배)</div>
     </div>
 
-    <!-- HELP -->
-    <div>
-      <div class="phone-frame">
-        <div class="phone-screen" style="overflow: hidden;">
-          <div style="display: flex; align-items: center; gap: 6pt;">
-            <button class="btn-icon" style="width: 22pt; height: 22pt;">←</button>
-            <div class="eyebrow-chip" style="font-size: 7pt;">도움말 · 장기 규칙</div>
-          </div>
-          <div style="margin-top: 12pt; font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 16pt; letter-spacing: -0.02em;">장기, 이렇게 두는 게임입니다</div>
-          <p style="margin-top: 4pt; font-size: 8pt; color: var(--fg3); line-height: 1.55;">9×10 격자, 두 사람이 번갈아 한 수씩…</p>
-          <div style="margin-top: 8pt; font-family: 'JetBrains Mono', monospace; font-size: 7pt; color: var(--gold-d);">01</div>
-          <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 11pt;">보드는 어떻게 생겼나요?</div>
-          <div class="card" style="margin-top: 6pt; padding: 6pt 8pt;">
-            <ul style="margin: 0; padding-left: 12pt; font-size: 7pt; line-height: 1.55;">
-              <li>궁성 3×3</li>
-              <li>강 — 楚河漢界</li>
-              <li>두 진영 — 초/한</li>
-            </ul>
-          </div>
-          <div style="margin-top: 8pt; font-family: 'JetBrains Mono', monospace; font-size: 7pt; color: var(--gold-d);">02</div>
-          <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 11pt;">기물 구성</div>
+    <!-- 06 HELP -->
+    <div class="screen-tile">
+      <div class="phone-frame"><div class="phone-screen">
+        <div style="display: flex; align-items: center; gap: 5pt;">
+          <div class="ps-icon">←</div>
+          <div class="ps-eyebrow">도움말 · 장기 규칙</div>
         </div>
-      </div>
+        <div class="ps-title" style="margin-top: 9pt; font-size: 11pt;">장기, 이렇게<br/>두는 게임입니다</div>
+        <p class="ps-body">9×10 격자에서 두 사람이 번갈아 한 수씩 두며 상대 궁을 잡는 게임.</p>
+        <div style="margin-top: 8pt; font-family: 'JetBrains Mono', monospace; font-size: 6pt; color: var(--gold-d); letter-spacing: 0.1em;">01</div>
+        <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 9pt; margin-top: 1pt;">보드는 어떻게?</div>
+        <div class="ps-card" style="margin-top: 4pt;">
+          <ul style="margin: 0; padding-left: 9pt; font-size: 6pt; line-height: 1.55;">
+            <li>궁성 3×3</li>
+            <li>강(楚河漢界)</li>
+            <li>초(아래)·한(위)</li>
+          </ul>
+        </div>
+        <div style="margin-top: 6pt; font-family: 'JetBrains Mono', monospace; font-size: 6pt; color: var(--gold-d); letter-spacing: 0.1em;">02</div>
+        <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 9pt; margin-top: 1pt;">기물 구성 · 각 16개</div>
+        <div class="ps-card" style="margin-top: 4pt;">
+          <div style="font-size: 6pt; line-height: 1.55; color: var(--fg2);">궁1 · 사2 · 차2 · 포2 · 마2 · 상2 · 졸/병5</div>
+        </div>
+      </div></div>
       <div class="screen-caption">06 · 도움말</div>
     </div>
+
   </div>
 
   <div class="pf"><span>07 · SCREENS</span><span>08 / 09</span></div>
@@ -1236,17 +1297,17 @@ function Board({ width = 320 }) {
 }
 
 const mount1 = document.getElementById('board-mount');
-if (mount1) ReactDOM.createRoot(mount1).render(<Board width={320} />);
+if (mount1) ReactDOM.createRoot(mount1).render(<Board width={240} />);
 
 const mount2 = document.getElementById('home-mini');
 if (mount2) ReactDOM.createRoot(mount2).render(
-  <div style={{ transform: 'perspective(800px) rotateX(20deg) scale(0.72)', transformOrigin: 'center top', filter: 'drop-shadow(0 14px 20px rgba(80,55,20,0.22))' }}>
-    <Board width={140} />
+  <div style={{ transform: 'perspective(600px) rotateX(20deg) scale(0.95)', transformOrigin: 'center top', filter: 'drop-shadow(0 10px 14px rgba(80,55,20,0.22))' }}>
+    <Board width={80} />
   </div>
 );
 
 const mount3 = document.getElementById('game-mini');
-if (mount3) ReactDOM.createRoot(mount3).render(<Board width={150} />);
+if (mount3) ReactDOM.createRoot(mount3).render(<Board width={88} />);
 
 // Signal ready for headless print
 window.__READY__ = true;
