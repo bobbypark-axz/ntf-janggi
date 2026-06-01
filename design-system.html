@@ -89,41 +89,41 @@
   h2 {
     font-family: 'Noto Serif KR', serif;
     font-weight: 700;
-    font-size: 22pt;
-    margin: 0 0 4pt;
+    font-size: 18pt;
+    margin: 0 0 3pt;
     letter-spacing: -0.02em;
     line-height: 1.1;
   }
   h3 {
     font-family: 'Pretendard Variable', sans-serif;
     font-weight: 700;
-    font-size: 12pt;
-    margin: 12pt 0 6pt;
+    font-size: 10.5pt;
+    margin: 10pt 0 5pt;
     letter-spacing: -0.01em;
     color: var(--fg1);
   }
   .eyebrow {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
+    font-size: 8pt;
     font-weight: 500;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--gold-d);
   }
   .lead {
-    font-size: 11pt;
+    font-size: 9.5pt;
     color: var(--fg2);
-    line-height: 1.65;
+    line-height: 1.55;
     max-width: 130mm;
   }
   .meta {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5pt;
+    font-size: 8pt;
     color: var(--fg3);
     letter-spacing: 0.06em;
   }
-  p { margin: 6pt 0; font-size: 10.5pt; color: var(--fg2); line-height: 1.6; }
-  ul, ol { margin: 4pt 0 8pt; padding-left: 20pt; font-size: 10.5pt; color: var(--fg2); line-height: 1.75; }
+  p { margin: 4pt 0; font-size: 9.5pt; color: var(--fg2); line-height: 1.55; }
+  ul, ol { margin: 3pt 0 6pt; padding-left: 16pt; font-size: 9.5pt; color: var(--fg2); line-height: 1.65; }
   code, kbd {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9.5pt;
@@ -146,87 +146,83 @@
   /* ─── Cards ─── */
   .card {
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10pt 12pt;
+    border-radius: 8px;
+    padding: 8pt 10pt;
     background: var(--bg-elev);
   }
-  .card-elev { background: var(--bg-elev); }
-  .card-card { background: var(--bg-card); }
 
   /* ─── Color swatch ─── */
   .swatch {
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     background: #fff;
   }
-  .swatch .chip {
-    height: 42pt;
-  }
-  .swatch .info {
-    padding: 5pt 8pt;
-  }
+  .swatch .chip { height: 28pt; }
+  .swatch .info { padding: 4pt 7pt 5pt; }
   .swatch .name {
     font-weight: 700;
-    font-size: 10pt;
+    font-size: 9pt;
     color: var(--fg1);
+    letter-spacing: -0.01em;
   }
   .swatch .hex {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5pt;
+    font-size: 7.5pt;
     color: var(--fg3);
-    margin-top: 2pt;
+    margin-top: 1pt;
     letter-spacing: 0.04em;
   }
   .swatch .desc {
-    font-size: 8.5pt;
+    font-size: 7.5pt;
     color: var(--fg3);
-    margin-top: 3pt;
+    margin-top: 2pt;
     line-height: 1.4;
   }
 
   /* ─── Type sample ─── */
   .type-sample {
     border-bottom: 1px solid var(--border);
-    padding: 10pt 0;
+    padding: 7pt 0;
   }
-  .type-sample:last-child { border-bottom: none; }
+  .type-sample:last-child { border-bottom: none; padding-bottom: 0; }
   .type-name {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
+    font-size: 7.5pt;
     color: var(--gold-d);
     letter-spacing: 0.08em;
-    margin-bottom: 4pt;
+    margin-bottom: 3pt;
   }
   .type-meta {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8pt;
+    font-size: 7pt;
     color: var(--fg4);
-    margin-top: 3pt;
+    margin-top: 2pt;
+    letter-spacing: 0.04em;
   }
 
   /* ─── Spacing scale ─── */
   .sp-bar {
     background: var(--gold);
-    height: 14pt;
+    height: 10pt;
     border-radius: 2px;
   }
   .sp-row {
     display: flex; align-items: center;
     gap: 10pt;
-    padding: 6pt 0;
+    padding: 4pt 0;
     border-bottom: 1px solid var(--border);
   }
-  .sp-row:last-child { border-bottom: none; }
+  .sp-row:last-child { border-bottom: none; padding-bottom: 0; }
   .sp-key {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5pt;
+    font-size: 8.5pt;
     color: var(--fg2);
-    width: 36pt;
+    width: 30pt;
   }
   .sp-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
+    font-size: 8pt;
     color: var(--fg3);
     margin-left: auto;
   }
@@ -234,41 +230,42 @@
   /* ─── Component samples ─── */
   .comp-block {
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14pt;
+    border-radius: 10px;
+    padding: 10pt 12pt;
     background: var(--bg);
   }
   .comp-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt;
+    font-size: 7.5pt;
     color: var(--gold-d);
     letter-spacing: 0.1em;
-    margin-bottom: 10pt;
+    margin-bottom: 7pt;
     text-transform: uppercase;
   }
   .comp-spec {
-    font-size: 9pt;
+    font-size: 8pt;
     color: var(--fg3);
-    margin-top: 10pt;
+    margin-top: 7pt;
     line-height: 1.5;
   }
   .spec-line {
     display: inline-block;
-    margin-right: 12pt;
+    margin-right: 10pt;
+    white-space: nowrap;
   }
   .spec-line b { color: var(--fg2); font-weight: 600; }
 
   /* ─── Buttons (rendered samples) ─── */
   .btn-primary {
-    height: 44pt; padding: 0 18pt;
+    height: 34pt; padding: 0 16pt;
     border: 1px solid #7A5818;
-    border-radius: 9pt;
+    border-radius: 7pt;
     background: linear-gradient(180deg, var(--gold-l) 0%, var(--gold) 50%, var(--gold-d) 100%);
     color: #2D1F08;
-    font-family: inherit; font-weight: 700; font-size: 12pt;
+    font-family: inherit; font-weight: 700; font-size: 10.5pt;
     letter-spacing: -0.01em;
-    box-shadow: inset 0 1px 0 rgba(255,235,180,0.6), 0 4px 10px rgba(120,80,20,0.2);
-    display: inline-flex; align-items: center; justify-content: center; gap: 6pt;
+    box-shadow: inset 0 1px 0 rgba(255,235,180,0.6), 0 2pt 5pt rgba(120,80,20,0.18);
+    display: inline-flex; align-items: center; justify-content: center; gap: 5pt;
     cursor: pointer;
   }
   .btn-primary[disabled] {
@@ -278,17 +275,17 @@
     box-shadow: none;
   }
   .btn-ghost {
-    height: 38pt; padding: 0 14pt;
+    height: 30pt; padding: 0 12pt;
     border: 1px solid var(--border);
-    border-radius: 7pt;
+    border-radius: 6pt;
     background: var(--bg-elev);
     color: var(--fg1);
-    font-family: inherit; font-weight: 500; font-size: 11pt;
-    display: inline-flex; align-items: center; justify-content: center; gap: 5pt;
+    font-family: inherit; font-weight: 500; font-size: 9.5pt;
+    display: inline-flex; align-items: center; justify-content: center; gap: 4pt;
   }
   .btn-ghost.active { background: var(--bg-card); border-color: var(--gold-d); }
   .btn-icon {
-    width: 30pt; height: 30pt; border-radius: 7pt;
+    width: 26pt; height: 26pt; border-radius: 6pt;
     border: 1px solid var(--border);
     background: var(--bg-elev);
     color: var(--fg1);
@@ -296,44 +293,44 @@
   }
   .eyebrow-chip {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5pt; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font-size: 7.5pt; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--fg3);
   }
   .step-badge {
-    width: 18pt; height: 18pt; border-radius: 50%;
+    width: 16pt; height: 16pt; border-radius: 50%;
     background: var(--cho); color: #fff;
     display: inline-flex; align-items: center; justify-content: center;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9pt; font-weight: 700;
+    font-size: 8pt; font-weight: 700;
   }
 
   /* ─── Piece atlas ─── */
   .piece-cell {
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 8px;
     background: var(--bg-elev);
-    padding: 8pt;
+    padding: 6pt 4pt;
     text-align: center;
   }
   .piece-cell .name {
-    font-weight: 700; font-size: 10pt;
-    margin-top: 6pt;
+    font-weight: 700; font-size: 8.5pt;
+    margin-top: 4pt;
   }
   .piece-cell .desc {
-    font-size: 8pt; color: var(--fg3);
-    margin-top: 2pt; line-height: 1.4;
+    font-size: 7pt; color: var(--fg3);
+    margin-top: 1pt; line-height: 1.35;
   }
 
   /* ─── Screen frame (faux iPhone) ─── */
   .phone-frame {
     width: 158pt; height: 332pt;
-    border-radius: 24pt;
-    border: 3pt solid #1A1612;
+    border-radius: 22pt;
+    border: 2.5pt solid #1A1612;
     background: var(--bg);
     overflow: hidden;
     position: relative;
-    box-shadow: 0 10px 22px rgba(60,40,15,0.18);
+    box-shadow: 0 2pt 4pt rgba(60,40,15,0.12);
     flex-shrink: 0;
   }
   .phone-screen {
@@ -468,7 +465,7 @@
   <h2 style="margin-top: 4pt;">컬러</h2>
   <p class="lead">의미별로 묶인 라이트 테마 팔레트. <b>초/한</b>은 진영 식별, <b>골드</b>는 강조·CTA, <b>표면/텍스트</b>는 화면 위계.</p>
 
-  <h3 style="margin-top: 22pt;">진영 (Sides)</h3>
+  <h3 style="margin-top: 14pt;">진영 (Sides)</h3>
   <div class="grid grid-4">
     <div class="swatch"><div class="chip" style="background: var(--cho);"></div><div class="info"><div class="name">cho</div><div class="hex">#0B6E3D</div><div class="desc">초(楚) · 녹색 · 아래쪽 진영</div></div></div>
     <div class="swatch"><div class="chip" style="background: var(--cho-bg);"></div><div class="info"><div class="name">cho-bg</div><div class="hex">#E6F3EC</div><div class="desc">초 진영 선택 배경</div></div></div>
@@ -516,58 +513,58 @@
   <h2 style="margin-top: 4pt;">타이포그래피 · 스페이싱</h2>
   <p class="lead">한자/한글 글리프는 <b>Noto Serif KR 900</b>, 본문은 <b>Pretendard Variable</b>, 수치/모노스페이스는 <b>JetBrains Mono</b>로 사용합니다.</p>
 
-  <h3 style="margin-top: 22pt;">서체</h3>
+  <h3 style="margin-top: 14pt;">서체</h3>
   <div class="grid grid-2">
     <div class="card">
       <div class="comp-label">DISPLAY · Noto Serif KR</div>
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 36pt; line-height: 1; color: var(--cho);">楚</div>
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 18pt; margin-top: 6pt;">勝 · 한 수, 다시 두다.</div>
-      <div class="comp-spec"><span class="spec-line"><b>weight</b> 700 · 900</span><span class="spec-line"><b>fontFeature</b> 한자/한글 글리프</span></div>
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 28pt; line-height: 1; color: var(--cho);">楚</div>
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 13pt; margin-top: 4pt;">勝 · 한 수, 다시 두다.</div>
+      <div class="comp-spec"><span class="spec-line"><b>weight</b> 700 · 900</span><span class="spec-line"><b>features</b> CJK</span></div>
     </div>
     <div class="card">
       <div class="comp-label">BODY · Pretendard Variable</div>
-      <div style="font-size: 18pt; font-weight: 700; margin-bottom: 2pt;">대국 설정</div>
-      <div style="font-size: 11pt; font-weight: 400; color: var(--fg2);">AI 난이도와 진영을 선택하세요.</div>
-      <div class="comp-spec"><span class="spec-line"><b>weight</b> 300–900</span><span class="spec-line"><b>tracking</b> -0.02em ~ 0</span></div>
+      <div style="font-size: 14pt; font-weight: 700; margin-bottom: 2pt;">대국 설정</div>
+      <div style="font-size: 9pt; font-weight: 400; color: var(--fg2);">AI 난이도와 진영을 선택하세요.</div>
+      <div class="comp-spec"><span class="spec-line"><b>weight</b> 300–900</span><span class="spec-line"><b>tracking</b> -0.02 ~ 0</span></div>
     </div>
     <div class="card" style="grid-column: span 2;">
       <div class="comp-label">MONO · JetBrains Mono</div>
-      <div style="font-family: 'JetBrains Mono', monospace; font-size: 14pt; font-weight: 500;">초 차2→3 · 12수 · 03:42</div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 11pt; font-weight: 500;">초 차2→3 · 12수 · 03:42</div>
       <div class="comp-spec"><span class="spec-line"><b>용도</b> 카운터·기보·이브로우·코드</span><span class="spec-line"><b>tracking</b> 0.06–0.16em</span></div>
     </div>
   </div>
 
   <h3>타입 스케일</h3>
-  <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12pt 16pt;">
+  <div class="card" style="padding: 8pt 14pt;">
     <div class="type-sample">
       <div class="type-name">display-xl · cover hero</div>
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 48pt; letter-spacing: -0.03em; line-height: 1.0; color: var(--cho);">楚</div>
-      <div class="type-meta">Noto Serif KR 900 · 64pt → 48pt (responsive)</div>
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 32pt; letter-spacing: -0.03em; line-height: 1.0; color: var(--cho);">楚</div>
+      <div class="type-meta">Noto Serif KR 900 · 64pt → 48pt</div>
     </div>
     <div class="type-sample">
       <div class="type-name">title · h2</div>
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 22pt; letter-spacing: -0.02em;">처음이세요?</div>
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 700; font-size: 17pt; letter-spacing: -0.02em;">처음이세요?</div>
       <div class="type-meta">Noto Serif KR 700 · 26–30pt</div>
     </div>
     <div class="type-sample">
       <div class="type-name">heading · h3</div>
-      <div style="font-weight: 700; font-size: 15pt; letter-spacing: -0.01em;">기물별 이동 규칙</div>
+      <div style="font-weight: 700; font-size: 12pt; letter-spacing: -0.01em;">기물별 이동 규칙</div>
       <div class="type-meta">Pretendard 700 · 14–16pt</div>
     </div>
     <div class="type-sample">
       <div class="type-name">body</div>
-      <div style="font-size: 11pt; line-height: 1.6; color: var(--fg2);">상대 궁을 잡을 수 없게 만드는 것이 게임의 목표입니다.</div>
-      <div class="type-meta">Pretendard 400/500 · 13.5–14pt body · line-height 1.6</div>
+      <div style="font-size: 9.5pt; line-height: 1.55; color: var(--fg2);">상대 궁을 잡을 수 없게 만드는 것이 게임의 목표입니다.</div>
+      <div class="type-meta">Pretendard 400/500 · 13.5–14pt · LH 1.6</div>
     </div>
     <div class="type-sample">
       <div class="type-name">caption / eyebrow</div>
-      <div class="eyebrow" style="font-size: 9pt;">새 대국을 시작합니다</div>
+      <div class="eyebrow" style="font-size: 8pt;">새 대국을 시작합니다</div>
       <div class="type-meta">JetBrains Mono 500 · 10–11pt · tracking 0.16em</div>
     </div>
   </div>
 
   <h3>스페이싱 (4px 그리드)</h3>
-  <div class="card" style="padding: 6pt 14pt;">
+  <div class="card" style="padding: 6pt 12pt;">
     <div class="sp-row"><div class="sp-key">s-1</div><div class="sp-bar" style="width: 4pt;"></div><div class="sp-val">4 px</div></div>
     <div class="sp-row"><div class="sp-key">s-2</div><div class="sp-bar" style="width: 8pt;"></div><div class="sp-val">8 px</div></div>
     <div class="sp-row"><div class="sp-key">s-3</div><div class="sp-bar" style="width: 12pt;"></div><div class="sp-val">12 px</div></div>
@@ -579,29 +576,29 @@
 
   <h3>모서리 (Radii)</h3>
   <div class="grid grid-6">
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">xs · 4</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 4px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">xs · 4</div>
     </div>
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">sm · 6</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">sm · 6</div>
     </div>
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">md · 10</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">md · 10</div>
     </div>
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">lg · 12</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">lg · 12</div>
     </div>
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">xl · 14</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">xl · 14</div>
     </div>
-    <div class="card" style="text-align: center; padding: 14pt 6pt;">
-      <div style="width: 36pt; height: 36pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; margin: 0 auto;"></div>
-      <div class="type-meta" style="margin-top: 6pt;">full</div>
+    <div class="card" style="text-align: center; padding: 9pt 4pt;">
+      <div style="width: 28pt; height: 28pt; background: var(--bg-card); border: 1px solid var(--border); border-radius: 999px; margin: 0 auto;"></div>
+      <div class="type-meta" style="margin-top: 4pt;">full</div>
     </div>
   </div>
 
@@ -614,7 +611,7 @@
   <h2 style="margin-top: 4pt;">UI 컴포넌트</h2>
   <p class="lead">버튼·카드·뱃지 등 기본 원자. 각 컴포넌트는 코드 내 같은 이름으로 정의되어 있어 그대로 참조 가능합니다.</p>
 
-  <h3 style="margin-top: 22pt;">PrimaryCTA · 56h, gold gradient</h3>
+  <h3 style="margin-top: 14pt;">PrimaryCTA · 56h, gold gradient</h3>
   <div class="comp-block">
     <div class="comp-label">Default</div>
     <button class="btn-primary" style="width: 100%;">새 대국 시작 →</button>
@@ -701,82 +698,82 @@
   <h2 style="margin-top: 4pt;">카드 · 리스트 항목</h2>
   <p class="lead">정보 컨테이너 패턴. 좌측 색 액센트(border-left)는 의미별 위계 표시 (cho · han · gold).</p>
 
-  <h3 style="margin-top: 22pt;">기본 카드 (Card)</h3>
-  <div class="card" style="padding: 12pt 14pt;">
+  <h3 style="margin-top: 14pt;">기본 카드 (Card)</h3>
+  <div class="card">
     <div class="eyebrow-chip">최근 수</div>
-    <div style="margin-top: 6pt; font-family: 'JetBrains Mono', monospace; font-size: 12pt;">초 차2→3 ×병</div>
+    <div style="margin-top: 4pt; font-family: 'JetBrains Mono', monospace; font-size: 10pt;">초 차2→3 ×병</div>
   </div>
   <div class="comp-spec">
-    <span class="spec-line"><b>padding</b> 12 / 14</span>
-    <span class="spec-line"><b>radius</b> 10–14</span>
+    <span class="spec-line"><b>padding</b> 8/10pt</span>
+    <span class="spec-line"><b>radius</b> 8pt</span>
     <span class="spec-line"><b>bg</b> bg-elev</span>
     <span class="spec-line"><b>border</b> 1px border</span>
   </div>
 
   <h3>색 액센트 카드 (HelpCard accent)</h3>
   <div class="grid grid-3">
-    <div class="card" style="border-left: 3px solid var(--cho); padding: 12pt;">
-      <div style="font-weight: 700; font-size: 11pt; color: var(--cho);">초보자 팁</div>
-      <p style="margin-top: 2pt; font-size: 9pt;">차 13. 가장 강한 기물을 가볍게 잃지 마세요.</p>
+    <div class="card" style="border-left: 2.5pt solid var(--cho);">
+      <div style="font-weight: 700; font-size: 9.5pt; color: var(--cho);">초보자 팁</div>
+      <p style="margin: 2pt 0 0; font-size: 8.5pt;">차 13. 가장 강한 기물을 가볍게 잃지 마세요.</p>
     </div>
-    <div class="card" style="border-left: 3px solid var(--han); padding: 12pt;">
-      <div style="font-weight: 700; font-size: 11pt; color: var(--han);">장군 받기</div>
-      <p style="margin-top: 2pt; font-size: 9pt;">이동·막기·잡기 중 하나로 회피하세요.</p>
+    <div class="card" style="border-left: 2.5pt solid var(--han);">
+      <div style="font-weight: 700; font-size: 9.5pt; color: var(--han);">장군 받기</div>
+      <p style="margin: 2pt 0 0; font-size: 8.5pt;">이동·막기·잡기 중 하나로 회피하세요.</p>
     </div>
-    <div class="card" style="border-left: 3px solid var(--gold); padding: 12pt;">
-      <div style="font-weight: 700; font-size: 11pt;">빅장(맞장)</div>
-      <p style="margin-top: 2pt; font-size: 9pt;">두 궁이 같은 세로줄에서 마주보는 수는 금지.</p>
+    <div class="card" style="border-left: 2.5pt solid var(--gold);">
+      <div style="font-weight: 700; font-size: 9.5pt;">빅장(맞장)</div>
+      <p style="margin: 2pt 0 0; font-size: 8.5pt;">두 궁이 같은 세로줄에서 마주보는 수는 금지.</p>
     </div>
   </div>
 
-  <h3>난이도 라디오 리스트 항목 (Difficulty option)</h3>
-  <div style="display: flex; flex-direction: column; gap: 8pt;">
-    <div style="border: 1px solid var(--gold-d); background: var(--bg-card); border-radius: 12px; padding: 12pt 14pt; display: flex; justify-content: space-between; align-items: center;">
+  <h3>난이도 라디오 항목 (Difficulty option)</h3>
+  <div style="display: flex; flex-direction: column; gap: 6pt;">
+    <div style="border: 1px solid var(--gold-d); background: var(--bg-card); border-radius: 8pt; padding: 8pt 10pt; display: flex; justify-content: space-between; align-items: center;">
       <div>
-        <div style="font-weight: 700; font-size: 11pt;">보통</div>
-        <div style="font-size: 9pt; color: var(--fg3); margin-top: 2pt;">3수 앞을 읽습니다. 균형 잡힌 상대.</div>
+        <div style="font-weight: 700; font-size: 9.5pt;">보통</div>
+        <div style="font-size: 8pt; color: var(--fg3); margin-top: 1pt;">3수 앞을 읽습니다. 균형 잡힌 상대.</div>
       </div>
-      <div style="width: 14pt; height: 14pt; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;">
-        <div style="width: 6pt; height: 6pt; border-radius: 50%; background: var(--gold);"></div>
+      <div style="width: 12pt; height: 12pt; border-radius: 50%; border: 1.5pt solid var(--gold); display: flex; align-items: center; justify-content: center;">
+        <div style="width: 5pt; height: 5pt; border-radius: 50%; background: var(--gold);"></div>
       </div>
     </div>
-    <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 12px; padding: 12pt 14pt; display: flex; justify-content: space-between; align-items: center;">
+    <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 8pt; padding: 8pt 10pt; display: flex; justify-content: space-between; align-items: center;">
       <div>
-        <div style="font-weight: 700; font-size: 11pt;">어려움</div>
-        <div style="font-size: 9pt; color: var(--fg3); margin-top: 2pt;">4수 앞 + 평가 함수. 한 수 한 수 신중하게.</div>
+        <div style="font-weight: 700; font-size: 9.5pt;">어려움</div>
+        <div style="font-size: 8pt; color: var(--fg3); margin-top: 1pt;">4수 앞 + 평가 함수. 한 수 한 수 신중하게.</div>
       </div>
-      <div style="width: 14pt; height: 14pt; border-radius: 50%; border: 2px solid var(--fg4);"></div>
+      <div style="width: 12pt; height: 12pt; border-radius: 50%; border: 1.5pt solid var(--fg4);"></div>
     </div>
   </div>
   <div class="comp-spec">
     <span class="spec-line"><b>state</b> default / selected</span>
-    <span class="spec-line"><b>bg</b> bg-elev → bg-card (selected)</span>
-    <span class="spec-line"><b>border</b> border → gold-d (selected)</span>
-    <span class="spec-line"><b>radio</b> 18×18 border 2px</span>
+    <span class="spec-line"><b>bg</b> bg-elev → bg-card</span>
+    <span class="spec-line"><b>border</b> border → gold-d</span>
+    <span class="spec-line"><b>radio</b> 18×18 / 2px</span>
   </div>
 
   <h3>진영 선택 타일 (Side option)</h3>
   <div class="grid grid-2">
-    <div style="border: 1.5px solid var(--cho); background: var(--cho-bg); border-radius: 14px; padding: 18pt 12pt; text-align: center;">
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 32pt; line-height: 1; color: var(--cho);">楚</div>
-      <div style="margin-top: 6pt; font-weight: 600; font-size: 11pt;">초 (선수)</div>
+    <div style="border: 1.5pt solid var(--cho); background: var(--cho-bg); border-radius: 10pt; padding: 12pt 10pt; text-align: center;">
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 26pt; line-height: 1; color: var(--cho);">楚</div>
+      <div style="margin-top: 4pt; font-weight: 600; font-size: 9.5pt;">초 (선수)</div>
     </div>
-    <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 14px; padding: 18pt 12pt; text-align: center;">
-      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 32pt; line-height: 1; color: var(--han);">漢</div>
-      <div style="margin-top: 6pt; font-weight: 600; font-size: 11pt;">한 (후수)</div>
+    <div style="border: 1px solid var(--border); background: var(--bg-elev); border-radius: 10pt; padding: 12pt 10pt; text-align: center;">
+      <div style="font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 26pt; line-height: 1; color: var(--han);">漢</div>
+      <div style="margin-top: 4pt; font-weight: 600; font-size: 9.5pt;">한 (후수)</div>
     </div>
   </div>
 
   <h3>턴 칩 (Turn pill)</h3>
-  <div style="display: flex; gap: 10pt;">
-    <div style="display: inline-flex; align-items: center; gap: 7pt; padding: 5pt 12pt; border-radius: 9999px; background: var(--bg-elev); border: 1px solid var(--border);">
-      <div style="width: 7pt; height: 7pt; border-radius: 50%; background: var(--cho); box-shadow: 0 0 6pt var(--cho);"></div>
-      <span style="font-size: 11pt; font-weight: 600;">내 차례</span>
+  <div style="display: flex; gap: 8pt;">
+    <div style="display: inline-flex; align-items: center; gap: 5pt; padding: 4pt 10pt; border-radius: 9999px; background: var(--bg-elev); border: 1px solid var(--border);">
+      <div style="width: 6pt; height: 6pt; border-radius: 50%; background: var(--cho);"></div>
+      <span style="font-size: 9.5pt; font-weight: 600;">내 차례</span>
     </div>
-    <div style="display: inline-flex; align-items: center; gap: 7pt; padding: 5pt 12pt; border-radius: 9999px; background: var(--bg-elev); border: 1px solid var(--border);">
-      <div style="width: 7pt; height: 7pt; border-radius: 50%; background: var(--han); box-shadow: 0 0 6pt var(--han);"></div>
-      <span style="font-size: 11pt; font-weight: 600;">AI 차례</span>
-      <span style="font-family: 'JetBrains Mono', monospace; font-size: 9pt; color: var(--fg3);">생각중…</span>
+    <div style="display: inline-flex; align-items: center; gap: 5pt; padding: 4pt 10pt; border-radius: 9999px; background: var(--bg-elev); border: 1px solid var(--border);">
+      <div style="width: 6pt; height: 6pt; border-radius: 50%; background: var(--han);"></div>
+      <span style="font-size: 9.5pt; font-weight: 600;">AI 차례</span>
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 8pt; color: var(--fg3);">생각중…</span>
     </div>
   </div>
 
@@ -789,63 +786,63 @@
   <h2 style="margin-top: 4pt;">기물 아틀라스</h2>
   <p class="lead">8각형 우드 페이스 + Noto Serif KR 한자 글리프. 진영별 색(녹/적)으로 식별. 한글 토글 시 글리프만 교체.</p>
 
-  <h3 style="margin-top: 18pt;">한자 표기 (기본)</h3>
+  <h3 style="margin-top: 12pt;">한자 표기 (기본)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa1"></svg><div class="name" style="color: var(--cho);">楚 / 漢</div><div class="desc">궁 · 가치 ∞</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa2"></svg><div class="name" style="color: var(--cho);">士</div><div class="desc">사 · 가치 3</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa3"></svg><div class="name" style="color: var(--cho);">車</div><div class="desc">차 · 가치 13</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa4"></svg><div class="name" style="color: var(--cho);">包 / 砲</div><div class="desc">포 · 가치 7</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa5"></svg><div class="name" style="color: var(--cho);">馬</div><div class="desc">마 · 가치 5</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa6"></svg><div class="name" style="color: var(--cho);">象</div><div class="desc">상 · 가치 3</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pa7"></svg><div class="name" style="color: var(--cho);">卒 / 兵</div><div class="desc">졸/병 · 가치 2</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa1"></svg><div class="name" style="color: var(--cho);">楚 / 漢</div><div class="desc">궁 · 가치 ∞</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa2"></svg><div class="name" style="color: var(--cho);">士</div><div class="desc">사 · 가치 3</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa3"></svg><div class="name" style="color: var(--cho);">車</div><div class="desc">차 · 가치 13</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa4"></svg><div class="name" style="color: var(--cho);">包 / 砲</div><div class="desc">포 · 가치 7</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa5"></svg><div class="name" style="color: var(--cho);">馬</div><div class="desc">마 · 가치 5</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa6"></svg><div class="name" style="color: var(--cho);">象</div><div class="desc">상 · 가치 3</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pa7"></svg><div class="name" style="color: var(--cho);">卒 / 兵</div><div class="desc">졸/병 · 가치 2</div></div>
   </div>
 
   <h3>한(漢) 진영 (적색)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb1"></svg><div class="name" style="color: var(--han);">漢</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb2"></svg><div class="name" style="color: var(--han);">士</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb3"></svg><div class="name" style="color: var(--han);">車</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb4"></svg><div class="name" style="color: var(--han);">砲</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb5"></svg><div class="name" style="color: var(--han);">馬</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb6"></svg><div class="name" style="color: var(--han);">象</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pb7"></svg><div class="name" style="color: var(--han);">兵</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb1"></svg><div class="name" style="color: var(--han);">漢</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb2"></svg><div class="name" style="color: var(--han);">士</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb3"></svg><div class="name" style="color: var(--han);">車</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb4"></svg><div class="name" style="color: var(--han);">砲</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb5"></svg><div class="name" style="color: var(--han);">馬</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb6"></svg><div class="name" style="color: var(--han);">象</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pb7"></svg><div class="name" style="color: var(--han);">兵</div></div>
   </div>
 
   <h3>한글 표기 (토글)</h3>
   <div class="grid grid-7">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc1"></svg><div class="name" style="color: var(--cho);">궁</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc2"></svg><div class="name" style="color: var(--cho);">사</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc3"></svg><div class="name" style="color: var(--cho);">차</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc4"></svg><div class="name" style="color: var(--cho);">포</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc5"></svg><div class="name" style="color: var(--cho);">마</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc6"></svg><div class="name" style="color: var(--cho);">상</div></div>
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="pc7"></svg><div class="name" style="color: var(--cho);">졸</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc1"></svg><div class="name" style="color: var(--cho);">궁</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc2"></svg><div class="name" style="color: var(--cho);">사</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc3"></svg><div class="name" style="color: var(--cho);">차</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc4"></svg><div class="name" style="color: var(--cho);">포</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc5"></svg><div class="name" style="color: var(--cho);">마</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc6"></svg><div class="name" style="color: var(--cho);">상</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="pc7"></svg><div class="name" style="color: var(--cho);">졸</div></div>
   </div>
 
   <h3>상태 변화</h3>
   <div class="grid grid-4">
-    <div class="piece-cell"><svg viewBox="0 0 100 100" width="42" height="42" id="ps1"></svg><div class="name">기본</div><div class="desc">평상 상태</div></div>
+    <div class="piece-cell"><svg viewBox="0 0 100 100" width="34" height="34" id="ps1"></svg><div class="name">기본</div><div class="desc">평상 상태</div></div>
     <div class="piece-cell" style="background: linear-gradient(135deg, rgba(11,110,61,0.15), transparent);">
-      <svg viewBox="0 0 100 100" width="42" height="42" id="ps2"></svg>
+      <svg viewBox="0 0 100 100" width="34" height="34" id="ps2"></svg>
       <div class="name">선택 (glow)</div><div class="desc">초록 8각 후광</div>
     </div>
     <div class="piece-cell" style="background: linear-gradient(135deg, rgba(183,37,37,0.18), transparent);">
-      <svg viewBox="0 0 100 100" width="42" height="42" id="ps3"></svg>
+      <svg viewBox="0 0 100 100" width="34" height="34" id="ps3"></svg>
       <div class="name">위협 (threatened)</div><div class="desc">붉은 점멸 (장군)</div>
     </div>
     <div class="piece-cell" style="opacity: 0.5; filter: saturate(0.35);">
-      <svg viewBox="0 0 100 100" width="42" height="42" id="ps4"></svg>
+      <svg viewBox="0 0 100 100" width="34" height="34" id="ps4"></svg>
       <div class="name">잡힘 (captured)</div><div class="desc">탈색 + 페이드</div>
     </div>
   </div>
 
   <h3>스펙</h3>
-  <div class="card" style="padding: 10pt 14pt;">
-    <ul>
-      <li><b>형태</b>: 8각형 (octagon), viewBox 100×100, OCTAGON_OUTER = "30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30"</li>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
+      <li><b>형태</b>: 8각형, viewBox 100×100. OCTAGON_OUTER = "30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30"</li>
       <li><b>페이스</b>: radial-gradient(36% 28%, #FBEFD2 → faceLight #F4E2BC → faceMid #E6CD96)</li>
-      <li><b>외곽 베벨</b>: linear-gradient(0 → 1, #FFF4D4 → faceMid → faceShadow #A88554)</li>
-      <li><b>내부 더블 프레임</b>: 두 개의 옥타곤 라인, stroke = 진영 색, opacity 0.55 / 0.22</li>
+      <li><b>외곽 베벨</b>: linear-gradient(0→1, #FFF4D4 → faceMid → faceShadow #A88554)</li>
+      <li><b>내부 더블 프레임</b>: 옥타곤 라인 두 개, stroke = 진영 색, opacity 0.55 / 0.22</li>
       <li><b>그림자 플레이트</b>: translate(0.7, 1.4), fill rgba(50,30,10,0.55)</li>
       <li><b>글리프</b>: Noto Serif KR 900 · King 62 / 기타 56 · letter-spacing -0.02em</li>
     </ul>
@@ -860,16 +857,16 @@
   <h2 style="margin-top: 4pt;">장기판</h2>
   <p class="lead">9×10 격자, 점(교차점)에 기물 배치. 양 끝 3×3은 궁성, 중앙은 강(楚河漢界). 직선/대각선 격자선은 어두운 갈색.</p>
 
-  <h3 style="margin-top: 18pt;">치수와 구조</h3>
-  <div class="card" style="padding: 10pt 14pt;">
-    <ul>
-      <li><b>치수</b>: 9열 × 10행, 패딩 = cell × 0.6, 기물 크기 = cell × 0.94</li>
+  <h3 style="margin-top: 12pt;">치수와 구조</h3>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
+      <li><b>치수</b>: 9열 × 10행, 패딩 = cell × 0.6, 기물 = cell × 0.94</li>
       <li><b>배경</b>: radial-gradient(120% 80%, woodLight → woodMid 65% → woodDark)</li>
       <li><b>격자선</b>: stroke woodLine #3A2511, stroke-width 1.1</li>
       <li><b>궁성</b>: 양 끝 3×3, 대각선 X 표시</li>
-      <li><b>강</b>: 5번째 줄 위쪽 빈 칸에 한자 "楚河" / "漢界" (Noto Serif KR 700, 격자선 색)</li>
-      <li><b>위치 마크</b>: 졸/포 시작점 4개 모서리에 ┐┌┘└ 브래킷</li>
-      <li><b>외곽 그림자</b>: 0 14px 32px rgba(0,0,0,0.45) + inset bevel</li>
+      <li><b>강</b>: 5번째 줄 위쪽 빈 칸에 한자 "楚河" / "漢界" (Noto Serif KR 700)</li>
+      <li><b>위치 마크</b>: 졸/포 시작점 4모서리 ┐┌┘└ 브래킷</li>
+      <li><b>외곽 그림자</b>: 0 3px 6px rgba(60,40,15,0.18) + inset bevel</li>
     </ul>
   </div>
 
@@ -880,41 +877,39 @@
 
   <h3>인터랙션 표시</h3>
   <div class="grid grid-4">
-    <div class="card" style="padding: 10pt; text-align: center;">
-      <div style="width: 30pt; height: 30pt; border-radius: 0; margin: 0 auto; position: relative;">
-        <svg viewBox="0 0 100 100" width="30pt" height="30pt">
-          <polygon points="30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30" fill="none" stroke="var(--cho)" stroke-width="6" />
-        </svg>
-      </div>
-      <div class="name" style="margin-top: 6pt; font-weight: 700; font-size: 10pt;">선택 링</div>
-      <div class="desc" style="font-size: 8pt; color: var(--fg3);">cho 색, 3px stroke, drop-shadow</div>
+    <div class="card" style="text-align: center;">
+      <svg viewBox="0 0 100 100" width="26pt" height="26pt" style="display: block; margin: 0 auto;">
+        <polygon points="30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30" fill="none" stroke="var(--cho)" stroke-width="6" />
+      </svg>
+      <div style="margin-top: 4pt; font-weight: 700; font-size: 9pt;">선택 링</div>
+      <div style="font-size: 7.5pt; color: var(--fg3); margin-top: 1pt;">cho · stroke 3px</div>
     </div>
-    <div class="card" style="padding: 10pt; text-align: center;">
-      <svg viewBox="0 0 100 100" width="30pt" height="30pt">
+    <div class="card" style="text-align: center;">
+      <svg viewBox="0 0 100 100" width="26pt" height="26pt" style="display: block; margin: 0 auto;">
         <polygon points="30,3 70,3 97,30 97,70 70,97 30,97 3,70 3,30" fill="none" stroke="var(--han)" stroke-width="6" />
       </svg>
-      <div class="name" style="margin-top: 6pt; font-weight: 700; font-size: 10pt;">포획 가능 링</div>
-      <div class="desc" style="font-size: 8pt; color: var(--fg3);">han 색, 적 기물 위 표시</div>
+      <div style="margin-top: 4pt; font-weight: 700; font-size: 9pt;">포획 링</div>
+      <div style="font-size: 7.5pt; color: var(--fg3); margin-top: 1pt;">han · 적 기물 위</div>
     </div>
-    <div class="card" style="padding: 10pt; text-align: center;">
-      <div style="width: 14pt; height: 14pt; border-radius: 50%; background: #3A2511; opacity: 0.5; margin: 8pt auto;"></div>
-      <div class="name" style="margin-top: 6pt; font-weight: 700; font-size: 10pt;">합법 수 점</div>
-      <div class="desc" style="font-size: 8pt; color: var(--fg3);">14×14, wood-line 50%</div>
+    <div class="card" style="text-align: center;">
+      <div style="width: 12pt; height: 12pt; border-radius: 50%; background: #3A2511; opacity: 0.5; margin: 7pt auto;"></div>
+      <div style="margin-top: 4pt; font-weight: 700; font-size: 9pt;">합법 수 점</div>
+      <div style="font-size: 7.5pt; color: var(--fg3); margin-top: 1pt;">14×14 · 50%</div>
     </div>
-    <div class="card" style="padding: 10pt; text-align: center;">
-      <svg width="60" height="30" viewBox="0 0 60 30">
+    <div class="card" style="text-align: center;">
+      <svg width="52" height="26" viewBox="0 0 60 30" style="display: block; margin: 0 auto;">
         <line x1="5" y1="15" x2="55" y2="15" stroke="rgba(180,90,30,0.55)" stroke-width="2" stroke-dasharray="3 4"/>
-        <circle cx="5" cy="15" r="9" fill="rgba(180,90,30,0.18)"/>
+        <circle cx="5" cy="15" r="8" fill="rgba(180,90,30,0.18)"/>
       </svg>
-      <div class="name" style="margin-top: 6pt; font-weight: 700; font-size: 10pt;">직전 수 자취</div>
-      <div class="desc" style="font-size: 8pt; color: var(--fg3);">점선 + 출발점 원</div>
+      <div style="margin-top: 4pt; font-weight: 700; font-size: 9pt;">직전 수</div>
+      <div style="font-size: 7.5pt; color: var(--fg3); margin-top: 1pt;">점선 + 출발 원</div>
     </div>
   </div>
 
   <h3>장군 알림</h3>
-  <div class="card" style="padding: 14pt; text-align: center;">
-    <div style="display: inline-block; padding: 8pt 22pt; border-radius: 12px; background: rgba(190,42,42,0.92); border: 2px solid #fff; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 24pt; color: #fff; letter-spacing: 0.1em; box-shadow: 0 10pt 32pt rgba(0,0,0,0.4), 0 0 28pt rgba(190,42,42,0.6);">장군!</div>
-    <div style="margin-top: 8pt; font-size: 9pt; color: var(--fg3);">중앙 오버레이 · 1.4초 페이드. 보드 외곽은 1.2s checkFlash 애니메이션.</div>
+  <div class="card" style="text-align: center;">
+    <div style="display: inline-block; padding: 6pt 16pt; border-radius: 8pt; background: rgba(190,42,42,0.92); border: 2px solid #fff; font-family: 'Noto Serif KR', serif; font-weight: 900; font-size: 18pt; color: #fff; letter-spacing: 0.1em; box-shadow: 0 3pt 8pt rgba(190,42,42,0.35);">장군!</div>
+    <div style="margin-top: 5pt; font-size: 8pt; color: var(--fg3);">중앙 오버레이 1.4초 페이드 · 보드 외곽 1.2s checkFlash</div>
   </div>
 
   <div class="pf"><span>06 · BOARD</span><span>07 / 09</span></div>
@@ -1101,48 +1096,48 @@
   <div class="eyebrow">08 · APPENDIX</div>
   <h2 style="margin-top: 4pt;">참고 · 핸드오버 메모</h2>
 
-  <h3 style="margin-top: 22pt;">소스 매핑</h3>
-  <div class="card" style="padding: 12pt 14pt;">
-    <ul>
+  <h3 style="margin-top: 14pt;">소스 매핑</h3>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
       <li><b>구현 코드</b>: <code>index.html</code> — React 18 + Babel Standalone CDN, 외부 의존성 0</li>
-      <li><b>게임 엔진</b>: 첫 번째 <code>&lt;script type="text/babel"&gt;</code> — pieceMoves / legalMovesFor / isInCheck / isBikjang / chooseAIMove</li>
-      <li><b>보드 + 기물</b>: 두 번째 스크립트 — JanggiBoard / JanggiPiece / CapturedRow</li>
+      <li><b>게임 엔진</b>: 첫 번째 <code>&lt;script&gt;</code> — pieceMoves / legalMovesFor / isInCheck / isBikjang / chooseAIMove</li>
+      <li><b>보드·기물</b>: 두 번째 스크립트 — JanggiBoard / JanggiPiece / CapturedRow</li>
       <li><b>화면</b>: 세 번째 스크립트 — HomeScreen / SetupScreen / GameScreen / ResultScreen / HelpScreen + MenuSheet</li>
       <li><b>원본 시안 (다크 톤)</b>: <code>Janggi Mobile UI.html</code> + <code>*.jsx</code> + <code>assets/*.css</code></li>
     </ul>
   </div>
 
   <h3>변경 이력</h3>
-  <div class="card" style="padding: 12pt 14pt;">
-    <ul>
-      <li><b>v1.0</b> · 2026-05-31 · 라이트 테마 전환, 도움말 규칙 중심 확장, 상단 헤더 제거, 스크롤 동작 수정</li>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
+      <li><b>v1.0</b> · 2026-05-31 · 라이트 테마 전환, 도움말 규칙 중심 확장, 상단 헤더 제거, 스크롤 수정</li>
       <li><b>v0.9</b> · 2026-05-28 · 최초 빌드 (다크 테마, 5화면, AI 3단계)</li>
     </ul>
   </div>
 
   <h3>키 인터랙션 명세</h3>
-  <div class="card" style="padding: 12pt 14pt;">
-    <ul>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
       <li><b>기물 선택</b>: 내 진영 기물 탭 → 초록 8각 후광 + 합법 수 표시</li>
-      <li><b>이동</b>: 합법 수 칸 탭 → 240ms ease-out으로 위치 이동, 잡힘 기물 페이드아웃</li>
-      <li><b>선택 해제</b>: 같은 기물 또는 빈 칸 탭</li>
-      <li><b>장군</b>: 보드 외곽 1.2s 적색 점멸 + 중앙 "장군!" 오버레이 1.4초</li>
+      <li><b>이동</b>: 합법 수 칸 탭 → 240ms ease-out 위치 이동, 잡힘 기물 페이드아웃</li>
+      <li><b>선택 해제</b>: 같은 기물 또는 빈 곳 탭</li>
+      <li><b>장군</b>: 보드 외곽 1.2s 적색 점멸 + 중앙 "장군!" 오버레이 1.4s</li>
       <li><b>전환</b>: 화면 진입 fade-in 320ms cubic-bezier(0.22, 1, 0.36, 1)</li>
       <li><b>메뉴 시트</b>: 하단에서 슬라이드업 320ms, backdrop 페이드 200ms</li>
     </ul>
   </div>
 
   <h3>반응형 브레이크포인트</h3>
-  <div class="card" style="padding: 12pt 14pt;">
-    <ul>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
       <li><b>모바일</b> (≤599px): #root 풀폭, 100dvh 높이, 자체 스크롤</li>
       <li><b>데스크탑</b> (≥600px): #root 480px 최대, height min(880px, 100vh-48px), 둥근 28px 프레임</li>
     </ul>
   </div>
 
   <h3>접근성 메모 (미구현 / 차기)</h3>
-  <div class="card" style="padding: 12pt 14pt;">
-    <ul>
+  <div class="card">
+    <ul style="font-size: 8.5pt;">
       <li>키보드 이동 (방향키 + Enter) — 미구현</li>
       <li>색약 모드 (파랑↔주황) — 미구현</li>
       <li>ARIA 라벨 — IconBtn 일부에만 부여, 보드 전체 보강 필요</li>
@@ -1268,9 +1263,9 @@ function Board({ width = 320 }) {
 
   return (
     <div style={{
-      width: totalW, height: totalH, position: 'relative', borderRadius: 10,
+      width: totalW, height: totalH, position: 'relative', borderRadius: 8,
       background: `radial-gradient(120% 80% at 50% 50%, ${COLORS.woodLight} 0%, ${COLORS.woodMid} 65%, ${COLORS.woodDark} 100%)`,
-      boxShadow: '0 14px 32px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(58,37,17,0.35)',
+      boxShadow: '0 3px 6px rgba(60,40,15,0.18), inset 0 0 0 1px rgba(58,37,17,0.35)',
     }}>
       <svg width={totalW} height={totalH} style={{ position: 'absolute', inset: 0 }}>
         {lines}
@@ -1297,12 +1292,12 @@ function Board({ width = 320 }) {
 }
 
 const mount1 = document.getElementById('board-mount');
-if (mount1) ReactDOM.createRoot(mount1).render(<Board width={240} />);
+if (mount1) ReactDOM.createRoot(mount1).render(<Board width={200} />);
 
 const mount2 = document.getElementById('home-mini');
 if (mount2) ReactDOM.createRoot(mount2).render(
-  <div style={{ transform: 'perspective(600px) rotateX(20deg) scale(0.95)', transformOrigin: 'center top', filter: 'drop-shadow(0 10px 14px rgba(80,55,20,0.22))' }}>
-    <Board width={80} />
+  <div style={{ transform: 'perspective(600px) rotateX(18deg) scale(0.95)', transformOrigin: 'center top', filter: 'drop-shadow(0 4pt 6pt rgba(80,55,20,0.18))' }}>
+    <Board width={76} />
   </div>
 );
 
